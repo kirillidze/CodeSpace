@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>CodeSpace</title>
+	<style type="text/css">
+		.header__item {
+			cursor: pointer;
+		}
+		.main__user-container {
+			margin: 0 15px;
+			float: left;
+			width: calc(50% - 35px);
+		}
+		.main__user-window {
+			width: 100%;
+			height: 200px;
+			resize: none;
+		}
+		.main__ouput-window {
+			width: 50%;
+			height: 800px;
+		}
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
+</head>
+<body class="page">
+	<header class="header">
+		<input id="AUTO-UPDATE" class="checkbox" type="checkbox">
+		<label for="AUTO-UPDATE" class="header__item">Auto-Updating Preview</label>
+		<button id="RUN-BUTTON" class="button" >Run</button>
+	</header>
+	<main class="main">
+		<div class="main__user-container">
+			<p>html:</p>
+			<textarea id="HTML" class="main__user-window"></textarea>
+			<p>css:</p>
+			<textarea id="CSS" class="main__user-window"></textarea>
+			<p>js:</p>
+			<textarea id="JS" class="main__user-window"></textarea>
+		</div>
+		<iframe id="OUTPUT" class="main__ouput-window" src=""></iframe>
+	</main>
+	<footer class="footer">
+
+	</footer>
+</body>
+</html>
