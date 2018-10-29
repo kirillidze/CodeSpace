@@ -27,21 +27,83 @@ function documentReady() {
 		sessionStorage.setItem('js', $('#JS').prop('value'));
 	}
 
+	//находим document у окна вывода
+	let output = $('#OUTPUT')[0],
+		outputDoc = output.contentWindow.document;
+
+	//ф-ция добавления информации в окно вывода
+	function addInfoInOutput() {
+		$('<style>', {
+			type: "text/css",
+			text: $('#CSS').prop('value')
+		}).appendTo(outputDoc.head);
+
+		outputDoc.body.innerHTML = $('#HTML').prop('value');
+
+		//в некоторых браузерах alert срабатывает раньше, чем DOM
+		//даже если код будет в конце body, поэтому выполняем весь код
+		//с задержкой
+		let jsValue = $('#JS').prop('value');
+		jsValue = `setTimeout( () => {${jsValue}}, 0);`;
+
+		$('<script>', {
+			type: "text/javascript",
+			text: jsValue
+		}).appendTo(outputDoc.body);
+	}
+
 	//если в сессионном хранилище ничего нет, то записываем данные
 	if (sessionStorage.length === 0) {
-		//первоначальные состояния окон пользователя (для примера)
-		//в итоге ранее сохранённые данные будут браться с сервера
-		let serverHtmlValue = '<div></div><br/><input type="button" value="Кнопка">',
-			serverCssValue = 'div {width: 100px; height: 100px; border-radius: 50px; background-color: green;}',
-			serverJsValue = `alert('ну, привет');`;
 
-		//отображаем данные в окнах
-		$('#HTML').prop('value', serverHtmlValue);
-		$('#CSS').prop('value', serverCssValue);
-		$('#JS').prop('value', serverJsValue);
+		let ajaxHandlerScript = '../data/data.json',
+			serverHtmlValue,
+			serverCssValue,
+			serverJsValue;
 
-		//записываем в сессионное хранилище
-		setSessionData();
+		let readReady = function(callresult) {
+				if (callresult.error !== undefined)
+					alert(callresult.error);
+				else if (callresult !== "") {
+					serverHtmlValue = callresult.user1.projects.project1.html;
+					serverCssValue = callresult.user1.projects.project1.css;
+					serverJsValue = callresult.user1.projects.project1.js;
+
+					//отображаем данные в окнах
+					$('#HTML').prop('value', serverHtmlValue);
+					$('#CSS').prop('value', serverCssValue);
+					$('#JS').prop('value', serverJsValue);
+
+					//записываем в сессионное хранилище
+					setSessionData();
+					//отображаем в окне вывода
+					addInfoInOutput();
+				}
+			},
+
+			errorHandler = function(jqXHR) {
+				alert(jqXHR.status + ' ' + jqXHR.statusText);
+			};
+
+		//получаем данные с сервера
+		let getProjectInfo = function() {
+			return new Promise((resolve, reject) => {
+				try {
+					$.ajax({
+						url: ajaxHandlerScript,
+						type: 'GET',
+						dataType: 'json',
+						cache: false,
+						success: resolve,
+						error: reject
+					});
+				} catch (ex) {
+					console.log(ex);
+				}
+			});
+		};
+
+		getProjectInfo().then(readReady, errorHandler);
+
 		//иначе - читаем данные и перезаписываем в пользовательских окнах
 	} else {
 		let sessionHtmlValue = sessionStorage.getItem('html'),
@@ -51,33 +113,11 @@ function documentReady() {
 		$('#HTML').prop('value', sessionHtmlValue);
 		$('#CSS').prop('value', sessionCssValue);
 		$('#JS').prop('value', sessionJsValue);
+
+		//отображаем в окне вывода
+		addInfoInOutput();
 	}
 
-	//находим document у окна вывода
-	let output = $('#OUTPUT')[0],
-		outputDoc = output.contentWindow.document;
-
-	//создаём теги стилей и скрипта и добавляем их в head у окна вывода
-	$('<style>', {
-		type: "text/css",
-		text: $('#CSS').prop('value')
-	}).appendTo(outputDoc.head);
-
-	outputDoc.body.innerHTML = $('#HTML').prop('value');
-
-	$('<script>', {
-		type: "text/javascript",
-		text: $('#JS').prop('value')
-	}).appendTo(outputDoc.body);
-
-
-
-	/*
-		//создаём теги стилей и скрипта и добавляем их в head у окна вывода
-		outputDoc.head.append('<style id="OUTPUT-STYLE" type="text/css">' + $('#CSS').prop('value') + '</style>');
-		outputDoc.head.append('<script id="OUTPUT-SCRIPT" type="text/javascript">' + $('#JS').prop('value') + '</script>');
-		outputDoc.body.innerHTML = $('#HTML').prop('value');
-	*/
 	//отображение содержимого окна во фрейме при изменении
 	function showOutput() {
 		//перезаписываем данные в сессионное хранилище
