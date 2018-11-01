@@ -56,6 +56,7 @@ function documentReady() {
 			this.css = null;
 			this.js = null;
 			this.changes = new PubSubService();
+			this.contentSaved = true;
 			this.timer = 0;
 		}
 
@@ -89,7 +90,7 @@ function documentReady() {
 				//то берём это значение
 				if (sessionStorage.length) {
 					this.autoUpdate = JSON.parse(sessionStorage.autoUpdate);
-					//иначе то берём данные с сервера
+					//иначе берём данные с сервера
 					//и запоминаем в хранилище
 				} else {
 					this.autoUpdate = callresult.user1.settings.autoUpdate;
@@ -118,6 +119,21 @@ function documentReady() {
 			alert(jqXHR.status + ' ' + jqXHR.statusText);
 		}
 
+		savingData() {
+			//обращаемся к серверу и сохраняем данные
+
+			//помечаем, что были данные сохранены
+			this.contentSaved = true;
+
+		}
+
+		pubUnloadMessage(e) {
+			//если данные не сохранены, то показываем уведомление
+			if (!this.contentSaved) {
+				e.returnValue = 'message';
+			}
+		}
+
 		setContent() {
 			//записываем из окон пользователя данные в поле модели
 			//и нотифицируем слушателей об изменениях
@@ -125,6 +141,9 @@ function documentReady() {
 			this.css = $('#CSS').prop('value');
 			this.js = $('#JS').prop('value');
 			this.changes.pub('changeContent', 'changesWasPublished');
+
+			//помечаем, что были данные изменены, но не сохранены
+			this.contentSaved = false;
 		}
 
 		setContentByTimer(e) {
@@ -134,6 +153,8 @@ function documentReady() {
 				}
 				this.timer = setTimeout(this.setContent.bind(this), 500);
 			}
+			//помечаем, что были данные изменены, но не сохранены
+			this.contentSaved = false;
 		}
 
 		setAutoUpdate(val) {
@@ -220,7 +241,7 @@ function documentReady() {
 			//с задержкой
 			$('<script>', {
 				type: "text/javascript",
-				text: `setTimeout( () => {${this.myModel.js || data.js}}, 0);`
+				text: `setTimeout( () => {${this.myModel.js || data.js}}, 500);`
 			}).appendTo(this.outputDoc.body);
 
 		}
@@ -240,8 +261,16 @@ function documentReady() {
 			$('#RUN-BUTTON')
 				.click(this.showOutput.bind(this));
 
+			//следим за нажатием кнопки сохранения
+			$('#SAVE-BUTTON')
+				.click(this.startSaving.bind(this));
+
+			//следим за уходом со страницы
+			window.onbeforeunload = this.startUnload.bind(this);
+			//$(window).bind('beforeunload', this.startUnload.bind(this));
+
 			//следим за изменением статуса чекбокса автообновления
-			$('#AUTO-UPDATE').change(this.autoupdateChecked.bind(this));
+			$('#AUTO-UPDATE').change(this.autoUpdateChecked.bind(this));
 
 		}
 
@@ -253,7 +282,15 @@ function documentReady() {
 			this.myModel.setContentByTimer(e);
 		}
 
-		autoupdateChecked() {
+		startSaving() {
+			this.myModel.savingData();
+		}
+
+		startUnload(event) {
+			this.myModel.pubUnloadMessage(event);
+		}
+
+		autoUpdateChecked() {
 			this.myModel.setAutoUpdate($('#AUTO-UPDATE').prop('checked'));
 		}
 
