@@ -2,19 +2,19 @@
 	"user1": {
 		"password": 1234567890,
 		"settings": {
-			"auto-update": false,
-			"auto-save": false
+		"autoUpdate": true,
+			"autoSave": false
 		},
 		"projects": {
 			"project1": {
 				"html": "<div></div><br/><input type='button' value='Кнопка'>",
 				"css": "div {width: 100px; height: 100px; border-radius: 50px; background-color: green;}",
-				"js": "alert('ну, привет');"
+				"js": "alert('зелёный');"
 			},
 			"project2": {
-				"html": "",
-				"css": "",
-				"js": ""
+				"html": "<div></div><br/><input type='button' value='Кнопка'>",
+				"css": "div {width: 100px; height: 100px; border-radius: 50px; background-color: red;}",
+				"js": "alert('красный!');"
 			}
 		}
 	},
