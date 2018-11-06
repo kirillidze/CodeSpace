@@ -2,7 +2,7 @@
 	"user1": {
 		"password": 1234567890,
 		"settings": {
-		"autoUpdate": true,
+			"autoUpdate": true,
 			"autoSave": false
 		},
 		"projects": {
@@ -23,12 +23,17 @@
 		"settings": {},
 		"projects": {
 			"project1": {
-				"html": "",
+				"html": "1",
 				"css": "",
 				"js": ""
 			},
 			"project2": {
-				"html": "",
+				"html": "2",
+				"css": "",
+				"js": ""
+			},
+			"project3": {
+				"html": "3",
 				"css": "",
 				"js": ""
 			}

@@ -4,10 +4,18 @@
 	<meta charset="UTF-8">
 	<title>CodeSpace</title>
 	<style type="text/css">
-		.header__item {
+		.button_hide,
+		.checkbox_hide,
+		.header__dashboard-link,
+		.header__projects-list {
+			display: none;
+		}
+		.header__auto-update-label {
+			display: none;
 			cursor: pointer;
 		}
 		.main__user-container {
+			display: none;
 			margin: 0 15px;
 			float: left;
 			width: calc(50% - 35px);
@@ -18,19 +26,27 @@
 			resize: none;
 		}
 		.main__ouput-window {
+			display: none;
 			width: 50%;
 			height: 800px;
 		}
+		.main__projects-list {
+
+		}
+
 	</style>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script type="text/javascript" src="js/main.js"></script>
+	<script type="module" src="js/main.js"></script>
 </head>
 <body class="page">
 	<header class="header">
-		<input id="AUTO-UPDATE" class="checkbox" type="checkbox">
-		<label for="AUTO-UPDATE" class="header__item">Auto-Updating Preview</label>
-		<button id="RUN-BUTTON" class="button">Run</button>
-		<button id="SAVE-BUTTON" class="button">Save</button>
+		<input id="AUTO-UPDATE" class="checkbox checkbox_hide" type="checkbox">
+		<label for="AUTO-UPDATE" class="header__auto-update-label">Auto-Updating Preview</label>
+		<button id="RUN-BUTTON" class="button button_hide">Run</button>
+		<button id="SAVE-BUTTON" class="button button_hide">Save</button>
+		<button id="CREATE-BUTTON" class="button">CREATE</button>
+		<a class="header__dashboard-link" href="#dashboard">Dashboard</a>
+		<div class="header__projects-list"></div>
 	</header>
 	<main class="main">
 		<div class="main__user-container">
