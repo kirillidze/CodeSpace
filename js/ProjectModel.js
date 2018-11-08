@@ -97,9 +97,12 @@ export class ProjectModel {
 	setContent() {
 		//записываем из окон пользователя данные в поле модели
 		//и нотифицируем слушателей об изменениях
-		this.html = $('#HTML').prop('value');
-		this.css = $('#CSS').prop('value');
-		this.js = $('#JS').prop('value');
+		//this.html = $('#HTML').prop('value');
+		//this.css = $('#CSS').prop('value');
+		//this.js = $('#JS').prop('value');
+		this.html = ace.edit("HTML").getValue();
+            	this.css = ace.edit("CSS").getValue();
+            	this.js = ace.edit("JS").getValue();
 		this.changes.pub('changeContent', 'changesWasPublished');
 
 		//помечаем, что были данные изменены, но не сохранены
