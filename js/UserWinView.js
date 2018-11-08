@@ -35,9 +35,12 @@ export class UserWinView {
 
 
 		//отрисовываем полученные с сервера данные
-		$('#HTML').prop('value', data.html);
-		$('#CSS').prop('value', data.css);
-		$('#JS').prop('value', data.js);
+		//$('#HTML').prop('value', data.html);
+		//$('#CSS').prop('value', data.css);
+		//$('#JS').prop('value', data.js);
+		ace.edit("HTML").setValue(data.html);
+        	ace.edit("CSS").setValue(data.css);
+        	ace.edit("JS").setValue(data.js);
 		$('#AUTO-UPDATE').prop('checked', data.autoUpdate);
 
 		//показываем или прячем кнопку автообновления
