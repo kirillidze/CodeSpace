@@ -37,8 +37,9 @@ export class DashboardView {
 		for (let key in data) {
 			$('<a>', {
 				type: 'button',
-				href: '#' + key, //'javascript:void(0)'
-				onclick: '(e) => {e.preventDefault();}', //route.navigateTo(key)
+				class: 'link',
+				href: '#' + key,
+				onclick: '(e) => {e.preventDefault();}',
 				text: key
 			}).appendTo($('.header__projects-list'));
 			$('<br>').appendTo($('.header__projects-list'));
