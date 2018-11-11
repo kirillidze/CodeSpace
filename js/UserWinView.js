@@ -34,10 +34,7 @@ export class UserWinView {
 
 
 
-		//отрисовываем полученные с сервера данные
-		//$('#HTML').prop('value', data.html);
-		//$('#CSS').prop('value', data.css);
-		//$('#JS').prop('value', data.js);
+		//отрисовываем полученные с сервера данные		
 		ace.edit("HTML").setValue(data.html);
         	ace.edit("CSS").setValue(data.css);
         	ace.edit("JS").setValue(data.js);
