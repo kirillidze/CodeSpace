@@ -31,7 +31,7 @@ export class OutputView {
 		this.outputDoc.write(`<html>
                 <head><style>${this.myModel.css || data.css}</style></head>
                 <body>${this.myModel.html || data.html}
-                <script>${this.myModel.js || data.js}<\/script>
+                <script>setTimeout( () => {${this.myModel.js || data.js}}, 500);<\/script>
                 </body></html>`);
 	}
 
