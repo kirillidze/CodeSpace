@@ -96,10 +96,7 @@ export class ProjectModel {
 
 	setContent() {
 		//записываем из окон пользователя данные в поле модели
-		//и нотифицируем слушателей об изменениях
-		//this.html = $('#HTML').prop('value');
-		//this.css = $('#CSS').prop('value');
-		//this.js = $('#JS').prop('value');
+		//и нотифицируем слушателей об изменениях		
 		this.html = ace.edit("HTML").getValue();
             	this.css = ace.edit("CSS").getValue();
             	this.js = ace.edit("JS").getValue();
