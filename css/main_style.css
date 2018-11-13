@@ -41,6 +41,7 @@
 	width: 100%;
 	height: 200px;
 	resize: none;
+	font-size: 14px;
 }
 .main__ouput-window {
 	display: none;
@@ -48,6 +49,7 @@
 	height: 800px;
 	background-color: white;
 }
+
 .footer {
 	display: -webkit-flex;
 	display: -moz-flex;

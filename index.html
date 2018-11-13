@@ -7,13 +7,13 @@
 	<link rel="icon" href="favicon.png" type="image/png">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="css/main_style.css">
-	</style>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/ace.js" type="text/javascript" charset="utf-8"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/theme-chrome.js" type="text/javascript" charset="utf-8"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/mode-html.js" type="text/javascript" charset="utf-8"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/mode-css.js" type="text/javascript" charset="utf-8"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/theme-monokai.js" type="text/javascript" charset="utf-8"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/mode-html.js" type="text/javascript" charset="utf-8"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/mode-css.js" type="text/javascript" charset="utf-8"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
 	<script type="module" src="js/main.js"></script>
 	<script type="text/javascript" src="js/editor.js"></script>
 </head>
@@ -29,19 +29,21 @@
 		<a class="header__dashboard-link" href="#dashboard">Dashboard</a>
 		<div class="header__projects-list"></div>
 	</header>
+  
 	<main class="main">
 		<div class="main__promo-container">Здесь промо-контент</div>
 		<div class="main__projects-list">Список проектов будет здесь</div>
 		<div class="main__user-container">
 			<p>HTML:</p>
-			<div id="HTML" class="main__user-window">пусто</div>
+			<div id="HTML" class="main__user-window"></div>
 			<p>CSS:</p>
-			<div id="CSS" class="main__user-window">пусто</div>
+			<div id="CSS" class="main__user-window"></div>
 			<p>JS:</p>
-			<div id="JS" class="main__user-window">console.log('пусто');</div>
+			<div id="JS" class="main__user-window"></div>
 		</div>
-		<iframe id="OUTPUT" class="main__ouput-window" src=""></iframe>
-
+		
+		<iframe id="OUTPUT" src="" class="main__ouput-window"></iframe>
+		
 		<!-- Попап авторизации -->
 		<div class="layout"></div>
 		<div class="popup">
@@ -65,8 +67,8 @@
 			</div>
 			<div class="popup__close-cross"><i class="far fa-times-circle" title="Close"></i></div>
 		</div>
-
 	</main>
+  
 	<footer class="footer">
 		<ul class="footer__list">
 			<li class="footer__list-item"><a class="link" href="#">FAQ</a></li>
