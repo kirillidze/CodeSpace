@@ -6,6 +6,6 @@ import {
 
 $(function() { //аналогично DOMContentLoaded
 
-	new Router('user1');
+	new Router();
 
 });

@@ -30,6 +30,27 @@
 	background-color: #181818;
 	min-height: 500px;
 }
+.main__promo-container {
+	height: 500px;
+	background-image: url('../img/promo-img.jpg');
+	background-size: cover;
+}
+.main__promo-text {
+	padding: 1%;
+	width: 40%;
+	color: white;
+	font-size: 32pt;
+	background-color: rgba(47, 48, 43);
+	opacity: .8;
+}
+.main__promo-name {
+	margin: 0;
+}
+.main__promo-paragraph {
+	position: relative;
+	left: 5%;
+	margin: 0;
+}
 .main__user-container {
 	display: none;
 	color: white;
@@ -49,7 +70,6 @@
 	height: 800px;
 	background-color: white;
 }
-
 .footer {
 	display: -webkit-flex;
 	display: -moz-flex;
@@ -146,15 +166,10 @@
 	margin: 10px 0;
 	outline: none;
 	border: solid lightgrey 1px;
-
 }
-.popup__lost-password {
-	text-decoration: none;
-	color: grey;
-	font-weight: bold;
-}
-.popup__lost-password:hover {
-	text-decoration: underline;
+.popup__error-message {
+	display: none;
+	color: red;
 }
 .popup__button {
 	text-decoration: none;

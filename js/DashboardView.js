@@ -18,6 +18,14 @@ export class DashboardView {
 			.css('display', 'none');
 		$('#SAVE-BUTTON')
 			.css('display', 'none');
+		$('#LOGIN-BUTTON')
+			.css('display', 'none');
+		$('#SIGNUP-BUTTON')
+			.css('display', 'none');
+
+		//скрываем промо-контент
+		$('.main__promo-container')
+			.css('display', 'none');
 
 		//скрываем окна ввода и вывода
 		$('.main__user-container')
@@ -28,12 +36,18 @@ export class DashboardView {
 		$('.header__dashboard-link')
 			.css('display', 'none');
 
-		$('.header__projects-list')
+		//показываем кнопки
+		$('#CREATE-BUTTON')
+			.css('display', 'inline-block');
+		$('#LOGOUT-BUTTON')
+			.css('display', 'inline-block');
+
+		//показываем блок списка проектов и очищаем его
+		$('.main__projects-list').html('');
+		$('.main__projects-list')
 			.css('display', 'block');
 
-		$('.header__projects-list').html('');
-
-		//создаём кнопки для перехода к разным страницам
+		//создаём ссылки для перехода к разным страницам
 		for (let key in data) {
 			$('<a>', {
 				type: 'button',
@@ -41,8 +55,8 @@ export class DashboardView {
 				href: '#' + key,
 				onclick: '(e) => {e.preventDefault();}',
 				text: key
-			}).appendTo($('.header__projects-list'));
-			$('<br>').appendTo($('.header__projects-list'));
+			}).appendTo($('.main__projects-list'));
+			$('<br>').appendTo($('.main__projects-list'));
 		}
 	}
 }

@@ -53,6 +53,11 @@ export class DashboardModel {
 	_errorHandler(jqXHR) {
 		alert(jqXHR.status + ' ' + jqXHR.statusText);
 	}
+
+	logOut() {
+		localStorage.clear();
+		this.changes.pub('logOut', 'changesWasPublished');
+	}
 	/*
 	savingData() {
 		//обращаемся к серверу и сохраняем данные

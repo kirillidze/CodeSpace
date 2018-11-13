@@ -19,6 +19,8 @@ export class UserWinView {
 			.css('display', 'inline-block');
 		$('#SAVE-BUTTON')
 			.css('display', 'inline-block');
+		$('#LOGOUT-BUTTON')
+			.css('display', 'inline-block');
 
 		//показываем окна ввода и вывода
 		$('.main__user-container')
@@ -29,12 +31,10 @@ export class UserWinView {
 		$('.header__dashboard-link')
 			.css('display', 'inline-block');
 
-		$('.header__projects-list')
+		$('.main__projects-list')
 			.css('display', 'none');
 
-
-
-		//отрисовываем полученные с сервера данные		
+		//отрисовываем полученные с сервера данные
 		ace.edit("HTML").setValue(data.html);
 		ace.edit("CSS").setValue(data.css);
 		ace.edit("JS").setValue(data.js);

@@ -14,12 +14,23 @@ export class PopupController {
 		//следим за нажатием по кнопке авторизации
 		$('.popup__button[value="Log In"]')
 			.click(
-				console.log(this)
+				this.startSetLogInInfo.bind(this)
 			);
 
+		//валидация входа и регистрации
+		$('#LOGIN-FORM, #SIGNUP-FORM').validate({
+			rules: {
+				"user-nick": this.myModel.validateNickMap,
+				"user-pass": this.myModel.validatePassMap
+			}
+		});
 	}
 
 	pubClosePopup() {
 		this.myModel.changes.pub('hidePopup', 'changesWasPublished');
+	}
+
+	startSetLogInInfo() {
+		this.myModel.setLogInInfo();
 	}
 }
