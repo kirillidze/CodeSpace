@@ -17,6 +17,12 @@ export class OutputController {
 		$('#SAVE-BUTTON')
 			.click(this.startSaving.bind(this));
 
+		//следим за нажатием кнопки выхода
+		$('#LOGOUT-BUTTON')
+			.click(
+				this.startLogOut.bind(this)
+			);
+
 		//следим за уходом со страницы
 		window.onbeforeunload = this.startUnload.bind(this); //onbeforeunload
 		//$(window).bind('beforeunload', this.startUnload.bind(this));
@@ -44,6 +50,10 @@ export class OutputController {
 
 	autoUpdateChecked() {
 		this.myModel.setAutoUpdate($('#AUTO-UPDATE').prop('checked'));
+	}
+
+	startLogOut() {
+		this.myModel.logOut();
 	}
 
 }
