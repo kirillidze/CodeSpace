@@ -18,7 +18,7 @@ export class ProjectModel {
 		this.changes = new PubSubService();
 		this.contentSaved = true;
 		this.timer = 0;
-		// создадим промис зарание
+		// создадим промис заранее
 		this.createPromise = (context, data) => {
 			return new Promise( (resolve,reject) => {
 				try {
