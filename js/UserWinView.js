@@ -6,6 +6,7 @@ export class UserWinView {
 		this.myModel = model;
 		//подписываемся на изменения
 		this.myModel.changes.sub('changeOnload', this.updateWin.bind(this));
+		this.myModel.changes.sub('contentSaved', this.showSaveMessage.bind(this));
 	}
 
 	updateWin(data) {
@@ -19,6 +20,8 @@ export class UserWinView {
 			.css('display', 'inline-block');
 		$('#SAVE-BUTTON')
 			.css('display', 'inline-block');
+		$('#LOGOUT-BUTTON')
+			.css('display', 'inline-block');
 
 		//показываем окна ввода и вывода
 		$('.main__user-container')
@@ -29,12 +32,10 @@ export class UserWinView {
 		$('.header__dashboard-link')
 			.css('display', 'inline-block');
 
-		$('.header__projects-list')
+		$('.main__projects-list')
 			.css('display', 'none');
 
-
-
-		//отрисовываем полученные с сервера данные		
+		//отрисовываем полученные с сервера данные
 		ace.edit("HTML").setValue(data.html);
 		ace.edit("CSS").setValue(data.css);
 		ace.edit("JS").setValue(data.js);
@@ -46,5 +47,11 @@ export class UserWinView {
 		} else {
 			$('#RUN-BUTTON').show(0);
 		}
+	}
+	showSaveMessage() {
+		//показываем на 3сек сообщение о сохранении
+		$('.save, .layout')
+			.css('display', 'block')
+			.fadeOut(4000);
 	}
 }
