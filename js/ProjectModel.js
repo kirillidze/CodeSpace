@@ -144,7 +144,6 @@ export class ProjectModel {
 	}
 
 	setContentByTimer(e) {
-		console.log(e.which);
 		if (this.autoUpdate && (e.charCode || (e.which == 13) || (e.which == 8))) {
 			if (this.timer) {
 				clearTimeout(this.timer);

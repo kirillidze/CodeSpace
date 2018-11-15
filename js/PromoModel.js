@@ -4,7 +4,7 @@ import {
 	PubSubService
 } from './PubSubService.js';
 
-var ajaxHandlerScript = '../data/data.json';
+var ajaxHandlerScript = 'https://fe.it-academy.by/AjaxStringStorage2.php';
 
 //модель уровня PROMO
 export class PromoModel {
@@ -50,9 +50,13 @@ export class PromoModel {
 				try {
 					$.ajax({
 						url: ajaxHandlerScript,
-						type: 'GET',
+						type: 'POST',
 						dataType: 'json',
 						cache: false,
+						data: {
+							f: 'READ',
+							n: 'CodeSpace'
+						},
 						success: resolve,
 						error: reject
 					});
@@ -68,14 +72,16 @@ export class PromoModel {
 	_readReady(callresult) {
 		if (callresult.error !== undefined)
 			alert(callresult.error);
-		else if (callresult !== "") {
+		else if (callresult.result !== "") {
+
+			let dataFromServer = JSON.parse(callresult.result);
 
 			//создаём массив хэшей пользователь/пароль
-			for (let user in callresult) {
+			for (let user in dataFromServer) {
 
 				this.users.push({
 					userName: user,
-					password: callresult[user].password
+					password: dataFromServer[user].password
 				});
 			}
 
