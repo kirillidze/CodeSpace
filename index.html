@@ -8,10 +8,11 @@
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="css/main_style.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/ace.js" type="text/javascript" charset="utf-8"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/theme-monokai.js" type="text/javascript" charset="utf-8"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/mode-html.js" type="text/javascript" charset="utf-8"></script>
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/theme-monokai.js" type="text/javascript" charset="utf-8"></script>
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/mode-html.js" type="text/javascript" charset="utf-8"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/mode-css.js" type="text/javascript" charset="utf-8"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
 	<script type="module" src="js/main.js"></script>
@@ -21,18 +22,24 @@
 	<header class="header">
 		<button id="LOGIN-BUTTON" class="button button_hide">Log In</button>
 		<button id="SIGNUP-BUTTON" class="button button_hide">Sign Up</button>
+		<button id="LOGOUT-BUTTON" class="button button_hide">Log Out</button>
 		<input id="AUTO-UPDATE" class="checkbox checkbox_hide" type="checkbox">
 		<label for="AUTO-UPDATE" class="header__auto-update-label">Auto-Updating Preview</label>
 		<button id="RUN-BUTTON" class="button button_hide">Run</button>
 		<button id="SAVE-BUTTON" class="button button_hide">Save</button>
 		<button id="CREATE-BUTTON" class="button button_hide">CREATE</button>
 		<a class="header__dashboard-link" href="#dashboard">Dashboard</a>
-		<div class="header__projects-list"></div>
 	</header>
-  
+
 	<main class="main">
-		<div class="main__promo-container">Здесь промо-контент</div>
-		<div class="main__projects-list">Список проектов будет здесь</div>
+		<div class="main__promo-container">
+			<div class="main__promo-text">
+				<h3 class="main__promo-name">CodeSpace &mdash;</h3>
+				<p class="main__promo-paragraph">the best workspace</p>
+				<p class="main__promo-paragraph">for frontend development!</p>
+			</div>
+		</div>
+		<div class="main__projects-list"></div>
 		<div class="main__user-container">
 			<p>HTML:</p>
 			<div id="HTML" class="main__user-window"></div>
@@ -41,26 +48,30 @@
 			<p>JS:</p>
 			<div id="JS" class="main__user-window"></div>
 		</div>
-		
-		<iframe id="OUTPUT" src="" class="main__ouput-window"></iframe>
-		
+		<iframe id="OUTPUT" class="main__ouput-window" src=""></iframe>
+		<!-- Сообщение об успешном сохранении -->
+		<div class="save">
+			<h3 class="save__message">The changes have been successfully saved!</h3>
+		</div>
 		<!-- Попап авторизации -->
 		<div class="layout"></div>
 		<div class="popup">
 			<div class="popup__authorization">
 				<h3 class="popup__title">Authorization</h3>
-				<form>
+				<form id="LOGIN-FORM">
 					<input class="popup__text-place" type="text" placeholder="Your nick name" name="user-nick" value="" required><br>
 					<input class="popup__text-place" type="text" placeholder="Your password" name="user-pass" value="" required><br>
+					<span class="popup__error-message">There is no user with this password</span><br>
 					<input class="popup__button" type="button" name="" value="Log In">
 					<input class="popup__button popup__close-button" type="button" name="" value="Close">
 				</form>
 			</div>
 			<div class="popup__registration">
 				<h3 class="popup__title">Registration</h3>
-				<form>
+				<form id="SIGNUP-FORM">
 					<input class="popup__text-place" type="text" placeholder="Your nick name" name="user-nick" value="" required><br>
 					<input class="popup__text-place" type="text" placeholder="Your password" name="user-pass" value="" required><br>
+					<span class="popup__error-message">There is no user with this password</span><br>
 					<input class="popup__button" type="button" name="" value="Sign Up">
 					<input class="popup__button popup__close-button" type="button" name="" value="Close">
 				</form>
@@ -68,7 +79,7 @@
 			<div class="popup__close-cross"><i class="far fa-times-circle" title="Close"></i></div>
 		</div>
 	</main>
-  
+
 	<footer class="footer">
 		<ul class="footer__list">
 			<li class="footer__list-item"><a class="link" href="#">FAQ</a></li>
@@ -83,4 +94,3 @@
 
 </body>
 </html>
-
