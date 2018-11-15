@@ -53,50 +53,9 @@ export class DashboardModel {
 	_errorHandler(jqXHR) {
 		alert(jqXHR.status + ' ' + jqXHR.statusText);
 	}
-	/*
-	savingData() {
-		//обращаемся к серверу и сохраняем данные
 
-		//помечаем, что были данные сохранены
-		this.contentSaved = true;
-
-	}
-
-	pubUnloadMessage(e) {
-		//если данные не сохранены, то показываем уведомление
-		if (!this.contentSaved) {
-			e.returnValue = 'message';
-		}
-	}
-
-	setContent() {
-		//записываем из окон пользователя данные в поле модели
-		//и нотифицируем слушателей об изменениях
-		this.html = $('#HTML').prop('value');
-		this.css = $('#CSS').prop('value');
-		this.js = $('#JS').prop('value');
-		this.changes.pub('changeContent', 'changesWasPublished');
-
-		//помечаем, что были данные изменены, но не сохранены
-		this.contentSaved = false;
-	}
-
-	setContentByTimer(e) {
-		if (this.autoUpdate && (e.charCode || (e.which == 13) || (e.which == 8))) {
-			if (this.timer) {
-				clearTimeout(this.timer);
-			}
-			this.timer = setTimeout(this.setContent.bind(this), 500);
-		}
-		//помечаем, что были данные изменены, но не сохранены
-		this.contentSaved = false;
-	}
-
-	setAutoUpdate(val) {
-		this.autoUpdate = val;
-		//и сохраняем в сессионное хранилище
-		sessionStorage.autoUpdate = this.autoUpdate;
-		this.changes.pub('changeAutoUpdate', 'changesWasPublished');
-	}
-	*/
+	logOut() {
+		localStorage.clear();
+		this.changes.pub('logOut', 'changesWasPublished');
+	}	
 }
