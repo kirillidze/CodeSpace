@@ -58,26 +58,18 @@
 		<!-- Попап авторизации -->
 		<div class="layout"></div>
 		<div class="popup">
-			<div class="popup__authorization">
-				<h3 class="popup__title">Authorization</h3>
-				<form id="LOGIN-FORM">
-					<input class="popup__text-place" type="text" placeholder="Your nick name" name="user-nick" value="" required><br>
-					<input class="popup__text-place" type="text" placeholder="Your password" name="user-pass" value="" required><br>
-					<span class="popup__error-message">There is no user with this password</span><br>
-					<input class="popup__button" type="button" name="" value="Log In">
-					<input class="popup__button popup__close-button" type="button" name="" value="Close">
-				</form>
-			</div>
-			<div class="popup__registration">
-				<h3 class="popup__title">Registration</h3>
-				<form id="SIGNUP-FORM">
-					<input class="popup__text-place" type="text" placeholder="Your nick name" name="user-nick" value="" required><br>
-					<input class="popup__text-place" type="text" placeholder="Your password" name="user-pass" value="" required><br>
-					<span class="popup__error-message">There is no user with this password</span><br>
-					<input class="popup__button" type="button" name="" value="Sign Up">
-					<input class="popup__button popup__close-button" type="button" name="" value="Close">
-				</form>
-			</div>
+
+			<h3 class="popup__title popup__title_logIn">Authorization</h3>
+			<h3 class="popup__title popup__title_signUp">Registration</h3>
+			<form id="POPUP-FORM">
+				<input class="popup__text-place" type="text" placeholder="Your nick name" name="user-nick" value="" required><br>
+				<input class="popup__text-place" type="text" placeholder="Your password" name="user-pass" value="" required><br>
+				<span class="popup__error popup__error_logIn">There is no user with this password</span><br>
+				<span class="popup__error popup__error_signUp">That name's taken. Please choose another name</span><br>
+				<input class="popup__button popup__button_hide" type="button" name="" value="Log In">
+				<input class="popup__button popup__button_hide" type="button" name="" value="Sign Up">
+				<input class="popup__button" type="button" name="" value="Close">
+			</form>
 			<div class="popup__close-cross"><i class="far fa-times-circle" title="Close"></i></div>
 		</div>
 	</main>

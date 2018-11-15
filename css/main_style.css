@@ -97,12 +97,12 @@
 .save {
 	display: none;
 	position: fixed;
-	width: 30%;	
+	width: 30%;
 	top: 20%;
 	left: 35%;
 	z-index: 4000;
 	background-color: white;
-	border-radius: 13px;	
+	border-radius: 13px;
 }
 .save__message {
 	text-align: center;
@@ -136,12 +136,7 @@
 	padding: 40px;
 
 }
-.popup__authorization {
-	display: none;
-}
-.popup__registration {
-	display: none;
-}
+
 .popup__close-cross {
 	position: fixed;
 	top: 5px;
@@ -157,6 +152,7 @@
 	cursor: pointer;
 }
 .popup__title {
+	display: none;
 	text-align: center;
 }
 .popup__text-place {
@@ -166,7 +162,7 @@
 	outline: none;
 	border: solid lightgrey 1px;
 }
-.popup__error-message {
+.popup__error {
 	display: none;
 	color: red;
 }
@@ -187,6 +183,9 @@
   	box-shadow: 5px 10px 32px 0 lightgrey;
   	transition: 0.5s;
   	cursor: pointer;
+}
+.popup__button_hide {
+	display: none;
 }
 .popup__button:hover {
 	box-shadow: 0 0 0 0 lightgrey;
