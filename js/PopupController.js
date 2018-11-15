@@ -34,3 +34,4 @@ export class PopupController {
 		this.myModel.setLogInInfo();
 	}
 }
+

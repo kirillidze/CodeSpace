@@ -100,9 +100,9 @@ export class ProjectModel {
 				let oldData = JSON.parse(response.result);
 				// формируем новую запись
 				oldData[this.user].settings.autoUpdate = this.autoUpdate;
-				oldData[this.user].projects[this.project].html = this.html;
-				oldData[this.user].projects[this.project].css = this.css;
-				oldData[this.user].projects[this.project].js = this.js;
+				oldData[this.user].projects[this.project].html = ace.edit("HTML").getValue();
+			  oldData[this.user].projects[this.project].css = ace.edit("CSS").getValue();
+			  oldData[this.user].projects[this.project].js = ace.edit("JS").getValue();
 				// отправляем новые данные на сервер
 				return this.createPromise(self, {
 						f: 'UPDATE',
@@ -114,7 +114,10 @@ export class ProjectModel {
 						//если все успешно, придет "ок"
 						console.log('Сохранение: ' + response.result);
 						//помечаем, что были данные сохранены
-						if (response.result == 'OK') this.contentSaved = true;
+            if (response.result == 'OK') {
+              this.contentSaved = true;
+              this.changes.pub('contentSaved', 'saved');
+            }
 					})
 					.catch(error => {
 						console.log("На этапе записи на сервер случилась ошибка: " + error);
@@ -144,6 +147,7 @@ export class ProjectModel {
 	}
 
 	setContentByTimer(e) {
+		console.log(e.which);
 		if (this.autoUpdate && (e.charCode || (e.which == 13) || (e.which == 8))) {
 			if (this.timer) {
 				clearTimeout(this.timer);
@@ -166,3 +170,4 @@ export class ProjectModel {
 		this.changes.pub('logOut', 'changesWasPublished');
 	}
 }
+

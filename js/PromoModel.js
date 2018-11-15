@@ -106,7 +106,6 @@ export class PromoModel {
 	}
 
 	setLogInInfo() {
-
 		//стираем предыдущее имя юзера для повторного поиска
 		this.activeUser = null;
 
@@ -133,3 +132,4 @@ export class PromoModel {
 	}
 
 }
+

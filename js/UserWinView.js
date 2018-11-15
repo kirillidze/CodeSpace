@@ -6,6 +6,7 @@ export class UserWinView {
 		this.myModel = model;
 		//подписываемся на изменения
 		this.myModel.changes.sub('changeOnload', this.updateWin.bind(this));
+		this.myModel.changes.sub('contentSaved', this.showSaveMessage.bind(this));
 	}
 
 	updateWin(data) {
@@ -46,5 +47,11 @@ export class UserWinView {
 		} else {
 			$('#RUN-BUTTON').show(0);
 		}
+	}
+	showSaveMessage() {
+		//показываем на 3сек сообщение о сохранении
+		$('.save, .layout')
+			.css('display', 'block')
+			.fadeOut(4000);
 	}
 }
