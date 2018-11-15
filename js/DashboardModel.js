@@ -4,55 +4,58 @@ import {
 	PubSubService
 } from './PubSubService.js';
 
-var ajaxHandlerScript = '../data/data.json';
-
 //модель уровня DASHBOARD
 export class DashboardModel {
 	constructor(user) {
 		this.user = user;
 		this.list = null;
 		this.changes = new PubSubService();
-	}
-
-	loadServerData() {
-		//получаем данные с сервера
-		let getProjectInfo = function() {
-			return new Promise((resolve, reject) => {
+		// создадим промис зарание
+		this.createPromise = (context, data) => {
+			return new Promise( (resolve,reject) => {
 				try {
-					$.ajax({
-						url: ajaxHandlerScript,
-						type: 'GET',
-						dataType: 'json',
-						cache: false,
+					$.ajax("https://fe.it-academy.by/AjaxStringStorage2.php",
+					{
+						type: 'POST',
+						cache : false, 
+						dataType :'json',
+						context : context,						
+						data : data,                                            
 						success: resolve,
 						error: reject
 					});
 				} catch (ex) {
 					console.log(ex);
-				}
-			});
-		};
-
-		getProjectInfo().then(this._readReady.bind(this), this._errorHandler.bind(this));
+				}				               
+			});				  
+		} 
 	}
 
-	_readReady(callresult) {
-		if (callresult.error !== undefined)
-			alert(callresult.error);
-		else if (callresult !== "") {
-
-			this.list = callresult[this.user].projects;
-
+	loadServerData() {
+		//получаем данные с сервера
+		var self = this; // контекст для запроса
+		//запрос на чтение
+		this.createPromise(self, {f : 'READ', n : 'CodeSpace'})
+		.then( response => {  
+			if (response.error != undefined) {
+				alert(response.error);
+			} else if (response != "") {
+				// ответ с сервера				
+				let dataFromServer = JSON.parse(response.result);
+				// проверим, есть ли у этого user-а проекты
+				if (dataFromServer[this.user].projects)
+				console.log(dataFromServer[this.user].projects);
+				this.list = dataFromServer[this.user].projects;
+			}
 			//публикуем изменения при загрузке с сервера (открытие проекта)
 			//т.к. ответ от сервера занимает время, то передаём аргументы
 			//в публикации явно
 			this.changes.pub('changeListOnload', this.list);
-		}
-	}
-
-	_errorHandler(jqXHR) {
-		alert(jqXHR.status + ' ' + jqXHR.statusText);
-	}
+		})
+		.catch( error => {
+			console.log("На этапе запроса на сервер случилась ошибка: "+error);
+		})
+	}	
 
 	logOut() {
 		localStorage.clear();
