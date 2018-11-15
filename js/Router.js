@@ -134,6 +134,9 @@ export class Router {
 				//инициируем MVCвывода данных проекта (правый)
 				this.viewOfOutput = new OutputView(this.modelOfProject);
 				this.controllerOfOutput = new OutputController(this.modelOfProject);
+
+				this.modelOfProject.changes
+					.sub('logOut', this.logOutUser.bind(this));
 			}
 
 

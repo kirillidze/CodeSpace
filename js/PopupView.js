@@ -30,3 +30,4 @@ export class PopupView {
 		$('.popup__error-message').css('display', 'inline-block');
 	}
 }
+

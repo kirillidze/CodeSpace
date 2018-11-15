@@ -30,6 +30,27 @@
 	background-color: #181818;
 	min-height: 500px;
 }
+.main__promo-container {
+	height: 500px;
+	background-image: url('../img/promo-img.jpg');
+	background-size: cover;
+}
+.main__promo-text {
+	padding: 1%;
+	width: 40%;
+	color: white;
+	font-size: 32pt;
+	background-color: rgba(47, 48, 43);
+	opacity: .8;
+}
+.main__promo-name {
+	margin: 0;
+}
+.main__promo-paragraph {
+	position: relative;
+	left: 5%;
+	margin: 0;
+}
 .main__user-container {
 	display: none;
 	color: white;
@@ -49,17 +70,8 @@
 	height: 800px;
 	background-color: white;
 }
-
 .footer {
-	display: -webkit-flex;
-	display: -moz-flex;
-	display: -ms-flex;
-	display: -o-flex;
 	display: flex;
-	-webkit-flex-direction: column;
-	-moz-flex-direction: column;
-	-ms-flex-direction: column;
-	-o-flex-direction: column;
 	flex-direction: column;
 	justify-content: space-around;
 	min-height: 100px;
@@ -67,10 +79,6 @@
 	background-color: black;
 }
 .footer__list {
-	display: -webkit-flex;
-	display: -moz-flex;
-	display: -ms-flex;
-	display: -o-flex;
 	display: flex;
 	margin: 0;
 	padding: 0;
@@ -120,14 +128,11 @@
 	left: 50%;
 	max-width: 500px;
 	width: 70vw;
-	-webkit-transform: translate(-50%, -50%);
-	    -ms-transform: translate(-50%, -50%);
-	        transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 	z-index: 4000;
 	background-color: white;
 	border-radius: 13px;
-	-webkit-box-sizing: border-box;
-	        box-sizing: border-box;
+	box-sizing: border-box;
 	padding: 40px;
 
 }
@@ -144,8 +149,6 @@
 	color: #404040;
 	font-size: 20pt;
 	opacity: .6;
-	-webkit-transition: .5s;
-	-o-transition: .5s;
 	transition: .5s;
 }
 .popup__close-cross:hover {
@@ -162,15 +165,10 @@
 	margin: 10px 0;
 	outline: none;
 	border: solid lightgrey 1px;
-
 }
-.popup__lost-password {
-	text-decoration: none;
-	color: grey;
-	font-weight: bold;
-}
-.popup__lost-password:hover {
-	text-decoration: underline;
+.popup__error-message {
+	display: none;
+	color: red;
 }
 .popup__button {
 	text-decoration: none;
@@ -183,20 +181,14 @@
  	border-radius: 10px;
  	text-transform: uppercase;
  	letter-spacing: 2px;
- 	background-image: -webkit-linear-gradient(45deg, #51b8fa 0%, #33739c 50%, #265c7d 100%);
- 	background-image: -o-linear-gradient(45deg, #51b8fa 0%, #33739c 50%, #265c7d 100%);
  	background-image: linear-gradient(45deg, #51b8fa 0%, #33739c 50%, #265c7d 100%);
  	background-position: 100% 0;
   	background-size: 200% 200%;
-  	-webkit-box-shadow: 5px 10px 32px 0 lightgrey;
-  	        box-shadow: 5px 10px 32px 0 lightgrey;
-  	-webkit-transition: 0.5s;
-  	-o-transition: 0.5s;
+  	box-shadow: 5px 10px 32px 0 lightgrey;
   	transition: 0.5s;
   	cursor: pointer;
 }
 .popup__button:hover {
-	-webkit-box-shadow: 0 0 0 0 lightgrey;
-	        box-shadow: 0 0 0 0 lightgrey;
+	box-shadow: 0 0 0 0 lightgrey;
 	background-position: 0 0;
 }

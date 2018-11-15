@@ -4,7 +4,7 @@ import {
 	PubSubService
 } from './PubSubService.js';
 
-var ajaxHandlerScript = '../data/data.json';
+var ajaxHandlerScript = 'https://fe.it-academy.by/AjaxStringStorage2.php';
 
 //общая модель уровня ПРОЕКТ
 export class ProjectModel {
@@ -18,101 +18,114 @@ export class ProjectModel {
 		this.changes = new PubSubService();
 		this.contentSaved = true;
 		this.timer = 0;
-		// создадим промис зарание
+		// создадим промис заранее
 		this.createPromise = (context, data) => {
-			return new Promise( (resolve,reject) => {
+			return new Promise((resolve, reject) => {
 				try {
-					$.ajax("https://fe.it-academy.by/AjaxStringStorage2.php",
-					{
+					$.ajax({
+						url: ajaxHandlerScript,
 						type: 'POST',
-						cache : false, 
-						dataType :'json',
-						context : context,						
-						data : data,                                            
+						cache: false,
+						dataType: 'json',
+						context: context,
+						data: data,
 						success: resolve,
 						error: reject
 					});
 				} catch (ex) {
 					console.log(ex);
-				}				               
-			});				  
-		} 
+				}
+			});
+		};
 	}
 
 	loadServerData() {
 		//получаем данные с сервера
 		var self = this; // контекст для запроса
 		//запрос на чтение
-		this.createPromise(self, {f : 'READ', n : 'CodeSpace'})
-		.then( response => {  
-			if (response.error != undefined) {
-				alert(response.error);
-			} else if (response != "") {
-				// ответ с сервера				
-				let dataFromServer = JSON.parse(response.result);				
-				//если в сессионном хранилище есть данные о статусе автообновления,
-				//то берём это значение				
-				if (sessionStorage.autoUpdate != undefined) {
-					this.autoUpdate = JSON.parse(sessionStorage.autoUpdate);
-					//иначе берём данные с сервера
-					//и запоминаем в хранилище
-				} else {					
-					this.autoUpdate = dataFromServer[this.user].settings.autoUpdate;				
-					sessionStorage.autoUpdate = JSON.stringify(this.autoUpdate);
-				}				
-				this.html = dataFromServer[this.user].projects[this.project].html;
-				this.css = dataFromServer[this.user].projects[this.project].css;
-				this.js = dataFromServer[this.user].projects[this.project].js;
-				//публикуем изменения при загрузке с сервера (открытие проекта)
-				//т.к. ответ от сервера занимает время, то передаём аргументы
-				//в публикации явно
-				this.changes.pub(
-					'changeOnload', {
-						html: this.html,
-						css: this.css,
-						js: this.js,
-						autoUpdate: this.autoUpdate
+		this.createPromise(self, {
+				f: 'READ',
+				n: 'CodeSpace'
+			})
+			.then(response => {
+				if (response.error !== undefined) {
+					alert(response.error);
+				} else if (response !== "") {
+					// ответ с сервера
+					let dataFromServer = JSON.parse(response.result);
+					//если в сессионном хранилище есть данные о статусе автообновления,
+					//то берём это значение
+					if (sessionStorage.autoUpdate !== undefined) {
+						this.autoUpdate = JSON.parse(sessionStorage.autoUpdate);
+						//иначе берём данные с сервера
+						//и запоминаем в хранилище
+					} else {
+						this.autoUpdate = dataFromServer[this.user].settings.autoUpdate;
+						sessionStorage.autoUpdate = JSON.stringify(this.autoUpdate);
 					}
-				);
-			}			
-		})
-		.catch( error => {
-			console.log("На этапе запроса на сервер случилась ошибка: "+error);
-		})
-	}	
+
+					this.html = dataFromServer[this.user].projects[this.project].html;
+					this.css = dataFromServer[this.user].projects[this.project].css;
+					this.js = dataFromServer[this.user].projects[this.project].js;
+					//публикуем изменения при загрузке с сервера (открытие проекта)
+					//т.к. ответ от сервера занимает время, то передаём аргументы
+					//в публикации явно
+					this.changes.pub(
+						'changeOnload', {
+							html: this.html,
+							css: this.css,
+							js: this.js,
+							autoUpdate: this.autoUpdate
+						}
+					);
+				}
+			})
+			.catch(error => {
+				console.log("На этапе запроса на сервер случилась ошибка: " + error);
+			});
+	}
 
 	savingData() {
 		//обращаемся к серверу и сохраняем данные
 		var self = this; // сохраняем контекст
 		// если есть кнопка save, то авторизация пройдена и в хранилище УЖЕ есть имя юзера и проект
 		// отправляем запрос на чтение и изменение
-		this.createPromise(self, {f : 'LOCKGET', n : 'CodeSpace', p : 123})
-		.then( response => { 
-			// ответ с сервера                   
-			let oldData = JSON.parse(response.result);
-			// формируем новую запись
-			oldData[this.user].settings.autoUpdate = this.autoUpdate;
-			oldData[this.user].projects[this.project].html = ace.edit("HTML").getValue();
-			oldData[this.user].projects[this.project].css = ace.edit("CSS").getValue();
-			oldData[this.user].projects[this.project].js = ace.edit("JS").getValue();
-			// отправляем новые данные на сервер
-			return this.createPromise(self, {f : 'UPDATE', n : 'CodeSpace', p : 123, v : JSON.stringify(oldData)})
-			.then ( response => {
-				//если все успешно, придет "ок"
-				console.log('Сохранение: '+response.result);
-				//помечаем, что были данные сохранены
-				if (response.result == 'OK') {
-					this.contentSaved = true;
-					this.changes.pub('contentSaved', 'saved');
-				}
-			})				
-			.catch( error => {
-				console.log("На этапе записи на сервер случилась ошибка: "+error);
+		this.createPromise(self, {
+				f: 'LOCKGET',
+				n: 'CodeSpace',
+				p: 123
 			})
-		})
-		.catch( error => {
-			console.log("На этапе запроса на сервер случилась ошибка: "+error);
-		})		
+			.then(response => {
+				// ответ с сервера
+				let oldData = JSON.parse(response.result);
+				// формируем новую запись
+				oldData[this.user].settings.autoUpdate = this.autoUpdate;
+				oldData[this.user].projects[this.project].html = ace.edit("HTML").getValue();
+			  oldData[this.user].projects[this.project].css = ace.edit("CSS").getValue();
+			  oldData[this.user].projects[this.project].js = ace.edit("JS").getValue();
+				// отправляем новые данные на сервер
+				return this.createPromise(self, {
+						f: 'UPDATE',
+						n: 'CodeSpace',
+						p: 123,
+						v: JSON.stringify(oldData)
+					})
+					.then(response => {
+						//если все успешно, придет "ок"
+						console.log('Сохранение: ' + response.result);
+						//помечаем, что были данные сохранены
+            if (response.result == 'OK') {
+              this.contentSaved = true;
+              this.changes.pub('contentSaved', 'saved');
+            }
+					})
+					.catch(error => {
+						console.log("На этапе записи на сервер случилась ошибка: " + error);
+					});
+			})
+			.catch(error => {
+				console.log("На этапе запроса на сервер случилась ошибка: " + error);
+			});
 	}
 
 	pubUnloadMessage(e) {
@@ -151,4 +164,10 @@ export class ProjectModel {
 		sessionStorage.autoUpdate = this.autoUpdate;
 		this.changes.pub('changeAutoUpdate', 'changesWasPublished');
 	}
+
+	logOut() {
+		localStorage.clear();
+		this.changes.pub('logOut', 'changesWasPublished');
+	}
 }
+

@@ -28,7 +28,7 @@ export class DashboardModel {
 					console.log(ex);
 				}				               
 			});				  
-		} 
+		}; 
 	}
 
 	loadServerData() {
@@ -54,7 +54,7 @@ export class DashboardModel {
 		})
 		.catch( error => {
 			console.log("На этапе запроса на сервер случилась ошибка: "+error);
-		})
+		});
 	}	
 
 	logOut() {
@@ -62,3 +62,4 @@ export class DashboardModel {
 		this.changes.pub('logOut', 'changesWasPublished');
 	}	
 }
+

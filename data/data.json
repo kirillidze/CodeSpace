@@ -1,6 +1,6 @@
 {
 	"user1": {
-		"password": 1234567890,
+		"password": "Pass111",
 		"settings": {
 			"autoUpdate": true,
 			"autoSave": false
@@ -19,23 +19,26 @@
 		}
 	},
 	"user2": {
-		"password": 1111111111,
-		"settings": {},
+		"password": "Pass222",
+		"settings": {
+			"autoUpdate": true,
+			"autoSave": false
+		},
 		"projects": {
 			"project1": {
 				"html": "1",
-				"css": "",
-				"js": ""
+				"css": "1",
+				"js": "1"
 			},
 			"project2": {
 				"html": "2",
-				"css": "",
-				"js": ""
+				"css": "2",
+				"js": "2"
 			},
 			"project3": {
 				"html": "3",
-				"css": "",
-				"js": ""
+				"css": "3",
+				"js": "3"
 			}
 		}
 	}

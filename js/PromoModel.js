@@ -4,7 +4,7 @@ import {
 	PubSubService
 } from './PubSubService.js';
 
-var ajaxHandlerScript = '../data/data.json';
+var ajaxHandlerScript = 'https://fe.it-academy.by/AjaxStringStorage2.php';
 
 //модель уровня PROMO
 export class PromoModel {
@@ -50,9 +50,13 @@ export class PromoModel {
 				try {
 					$.ajax({
 						url: ajaxHandlerScript,
-						type: 'GET',
+						type: 'POST',
 						dataType: 'json',
 						cache: false,
+						data: {
+							f: 'READ',
+							n: 'CodeSpace'
+						},
 						success: resolve,
 						error: reject
 					});
@@ -68,14 +72,16 @@ export class PromoModel {
 	_readReady(callresult) {
 		if (callresult.error !== undefined)
 			alert(callresult.error);
-		else if (callresult !== "") {
+		else if (callresult.result !== "") {
+
+			let dataFromServer = JSON.parse(callresult.result);
 
 			//создаём массив хэшей пользователь/пароль
-			for (let user in callresult) {
+			for (let user in dataFromServer) {
 
 				this.users.push({
 					userName: user,
-					password: callresult[user].password
+					password: dataFromServer[user].password
 				});
 			}
 
@@ -100,7 +106,6 @@ export class PromoModel {
 	}
 
 	setLogInInfo() {
-
 		//стираем предыдущее имя юзера для повторного поиска
 		this.activeUser = null;
 
@@ -126,50 +131,5 @@ export class PromoModel {
 
 	}
 
-	/*
-	savingData() {
-		//обращаемся к серверу и сохраняем данные
-
-		//помечаем, что были данные сохранены
-		this.contentSaved = true;
-
-	}
-
-	pubUnloadMessage(e) {
-		//если данные не сохранены, то показываем уведомление
-		if (!this.contentSaved) {
-			e.returnValue = 'message';
-		}
-	}
-
-	setContent() {
-		//записываем из окон пользователя данные в поле модели
-		//и нотифицируем слушателей об изменениях
-		this.html = $('#HTML').prop('value');
-		this.css = $('#CSS').prop('value');
-		this.js = $('#JS').prop('value');
-		this.changes.pub('changeContent', 'changesWasPublished');
-
-		//помечаем, что были данные изменены, но не сохранены
-		this.contentSaved = false;
-	}
-
-	setContentByTimer(e) {
-		if (this.autoUpdate && (e.charCode || (e.which == 13) || (e.which == 8))) {
-			if (this.timer) {
-				clearTimeout(this.timer);
-			}
-			this.timer = setTimeout(this.setContent.bind(this), 500);
-		}
-		//помечаем, что были данные изменены, но не сохранены
-		this.contentSaved = false;
-	}
-
-	setAutoUpdate(val) {
-		this.autoUpdate = val;
-		//и сохраняем в сессионное хранилище
-		sessionStorage.autoUpdate = this.autoUpdate;
-		this.changes.pub('changeAutoUpdate', 'changesWasPublished');
-	}
-	*/
 }
+
