@@ -43,8 +43,8 @@ import {
 
 
 export class Router {
-	constructor(user) {
-		this.user = user;
+	constructor() {
+		this.user = localStorage.user;
 
 		this.modelOfPromo = null;
 		this.viewOfPromo = null;
@@ -66,19 +66,17 @@ export class Router {
 		window.addEventListener('hashchange', this.onhashchange.bind(this));
 
 
-		if (false) { //!localStorage.user - при пустом попадаем на промо
-			document.location.hash = '';
-			//если не авторизованы, то попадаем на промо
-			document.location.hash = '#promo';
+		if (!localStorage.user) { //!localStorage.user - при пустом попадаем на промо
+			this.navigateTo('#promo');
+
 		} else {
 
 			if (document.location.hash === '' || document.location.hash === '#promo') {
 				//при загрузке сразу попадаем на стену
-				//если хеш не меняли
-				document.location.hash = '#dashboard';
+				this.navigateTo('#dashboard');
 			} else {
 				//иначе переходим по введённому хешу
-				this.onhashchange().bind(this);
+				this.navigateTo(document.location.hash);
 			}
 		}
 
@@ -95,15 +93,18 @@ export class Router {
 		//удаляем решётку
 		route = route.substr(1);
 
-		if (false) { //!localStorage.user - при пустом попадаем на промо
+		if (!localStorage.user) { //!localStorage.user - при пустом попадаем на промо
 
 			//инициируем MVC PROMO
-			this.modelOfPromo = new PromoModel(this.user);
+			this.modelOfPromo = new PromoModel();
 			this.viewOfPromo = new PromoView(this.modelOfPromo);
 			this.controllerOfPromo = new PromoController(this.modelOfPromo);
 
 			this.viewOfPopup = new PopupView(this.modelOfPromo);
 			this.controllerOfPopup = new PopupController(this.modelOfPromo);
+
+			this.modelOfPromo.changes
+				.sub('changeUser', this.setUser.bind(this));
 
 		} else {
 
@@ -113,6 +114,8 @@ export class Router {
 				this.viewOfList = new DashboardView(this.modelOfList);
 				this.controllerOfList = new DashboardController(this.modelOfList);
 
+				this.modelOfList.changes
+					.sub('logOut', this.logOutUser.bind(this));
 			} else {
 				//надо проверить существует ли такой проект
 
@@ -138,11 +141,22 @@ export class Router {
 
 	}
 
-	navigateTo(route) { //???
+	navigateTo(route) {
 		// Выполнить начальную навигацию на адрес по умолчанию
-		if (document.location.hash === route && this.loaded) return;
-		this.route(route);
-		document.location.hash = route;
-		this.loaded = true;
+		if (document.location.hash === route) {
+			this.route(route);
+		} else {
+			document.location.hash = route;
+		}
+	}
+
+	setUser(activeUser) {
+		this.user = activeUser;
+		this.navigateTo('#dashboard');
+	}
+
+	logOutUser() {
+		this.user = null;
+		this.navigateTo('#promo');
 	}
 }
