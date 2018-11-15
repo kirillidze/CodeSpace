@@ -18,6 +18,8 @@ export class PromoView {
 			.css('display', 'none');
 		$('#SAVE-BUTTON')
 			.css('display', 'none');
+		$('#LOGOUT-BUTTON')
+			.css('display', 'none');
 
 		//скрываем окна ввода и вывода
 		$('.main__user-container')
@@ -28,13 +30,10 @@ export class PromoView {
 		$('.header__dashboard-link')
 			.css('display', 'none');
 
-		$('.header__projects-list') //этот блок надо удалить из html
-			.css('display', 'none');
-
-		$('.header__projects-list').html(''); //этот блок надо удалить из html
-
 		$('.main__projects-list')
 			.css('display', 'none');
+
+		$('.main__projects-list').html('');
 
 		$('#CREATE-BUTTON')
 			.css('display', 'none');
