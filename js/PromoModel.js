@@ -12,7 +12,6 @@ export class PromoModel {
 		this.userNick = null;
 		this.userPass = null;
 		this.activeUser = null;
-		this.dataFromServer = null;
 		this.users = [];
 		this.layoutLink = '../img/layout-plaster.png';
 		this.preloadedImagesH = {}; // ключ - имя предзагруженного изображения
@@ -66,53 +65,35 @@ export class PromoModel {
 
 	loadServerData() {
 		//получаем данные с сервера
-		let getProjectInfo = function() {
-			return new Promise((resolve, reject) => {
-				try {
-					$.ajax({
-						url: ajaxHandlerScript,
-						type: 'POST',
-						dataType: 'json',
-						cache: false,
-						data: {
-							f: 'READ',
-							n: 'CodeSpace'
-						},
-						success: resolve,
-						error: reject
-					});
-				} catch (ex) {
-					console.log(ex);
+		var self = this; // контекст для запроса
+		//запрос на чтение
+		this.createPromise(self, {
+				f: 'READ',
+				n: 'CodeSpace'
+			})
+			.then(response => {
+				if (response.error !== undefined) {
+					alert(response.error);
+				} else if (response !== "") {
+					// ответ с сервера
+					let dataFromServer = JSON.parse(response.result);
+
+					//создаём массив хэшей пользователь/пароль
+					for (let user in dataFromServer) {
+
+						this.users.push({
+							userName: user,
+							password: dataFromServer[user].password
+						});
+					}
+
+					this.changes.pub('changeOnload', 'changesWasPublished');
 				}
+			})
+			.catch(error => {
+				console.log("На этапе запроса на сервер случилась ошибка: " + error);
 			});
-		};
 
-		getProjectInfo().then(this._readReady.bind(this), this._errorHandler.bind(this));
-	}
-
-	_readReady(callresult) {
-		if (callresult.error !== undefined)
-			alert(callresult.error);
-		else if (callresult.result !== "") {
-
-			let dataFromServer = JSON.parse(callresult.result);
-
-			//создаём массив хэшей пользователь/пароль
-			for (let user in dataFromServer) {
-
-				this.users.push({
-					userName: user,
-					password: dataFromServer[user].password
-				});
-			}
-
-			this.changes.pub('changeOnload', 'changesWasPublished');
-
-		}
-	}
-
-	_errorHandler(jqXHR) {
-		alert(jqXHR.status + ' ' + jqXHR.statusText);
 	}
 
 	preloadImage(fn) {
@@ -170,15 +151,15 @@ export class PromoModel {
 			}
 		}
 
-		//если ник не занят, то добавляем его в базу и сохраняем в localStorage
+		//проверяем на наличие ошибки валидации
+		let validateError = $('.popup__text-place')
+			.hasClass('error');
+		//и если она есть, то ничего не делаем
+		if (validateError) return;
+
+		//если ник не занят и нет ошибки валидации, то добавляем его в базу и сохраняем в localStorage
 		if (this.activeUser) {
 			localStorage.user = this.activeUser + '';
-			/*
-			this.users.push({
-				userName: this.userNick,
-				password: this.userPass
-			});
-			*/
 			this.createUser(this.userNick, this.userPass);
 		} else {
 			this.changes.pub('userWasFound', 'changesWasPublished');
