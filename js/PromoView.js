@@ -5,7 +5,10 @@ export class PromoView {
 	constructor(model) {
 		this.myModel = model;
 		//подписываемся на изменения
-		this.myModel.changes.sub('changeOnload', this.update.bind(this));
+		this.myModel.changes
+			.sub('changeOnload', this.update.bind(this));
+		this.myModel.changes
+			.sub('changeContentHeight', this.updateContentHeight.bind(this));
 	}
 
 	update() {
@@ -49,5 +52,9 @@ export class PromoView {
 		$('.layout')
 			.css('background-image', `url(${this.myModel.layoutLink})`);
 
+	}
+
+	updateContentHeight(height) {
+		$('.main').height(height);
 	}
 }

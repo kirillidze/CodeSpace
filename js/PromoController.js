@@ -5,6 +5,11 @@ export class PromoController {
 	constructor(model) {
 		this.myModel = model;
 
+		$(window)
+			.resize(
+				this.startResizeContent.bind(this)
+			);
+
 		//следим за нажатием кнопки входа
 		$('#LOGIN-BUTTON')
 			.click(
@@ -18,6 +23,7 @@ export class PromoController {
 			);
 
 		this.startLoading();
+		this.startResizeContent();
 	}
 
 	startLoading() {
@@ -29,6 +35,10 @@ export class PromoController {
 
 	pubClickOnButton(button) {
 		this.myModel.changes.pub('changePopup', button);
+	}
+
+	startResizeContent() {
+		this.myModel.resizeContent();
 	}
 
 

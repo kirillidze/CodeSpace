@@ -223,4 +223,21 @@ export class PromoModel {
 
 	}
 
+	resizeContent() {
+
+		let windowHeight = $(window).outerHeight(true),
+			pageHeight = $('.page').outerHeight(true),
+			mainHeight = $('.main').outerHeight(true);
+
+		let resultHeight;
+
+		if (windowHeight > 500) {
+			resultHeight = mainHeight + windowHeight - pageHeight;
+		} else {
+			resultHeight = 400;
+		}
+
+		this.changes.pub('changeContentHeight', resultHeight);
+	}
+
 }
