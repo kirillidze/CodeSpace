@@ -12,6 +12,7 @@ export class PromoView {
 	}
 
 	update() {
+
 		//скрываем кнопки и чекбокс
 		$('#AUTO-UPDATE')
 			.css('display', 'none');
@@ -48,6 +49,8 @@ export class PromoView {
 			.css('display', 'inline-block');
 		$('#SIGNUP-BUTTON')
 			.css('display', 'inline-block');
+
+		$('#LOGIN-BUTTON, #SIGNUP-BUTTON').button();
 
 		$('.layout')
 			.css('background-image', `url(${this.myModel.layoutLink})`);

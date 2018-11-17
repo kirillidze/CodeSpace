@@ -9,6 +9,9 @@
 .link:hover {
 	color: white;
 }
+.button {
+	outline: none;
+}
 .button_hide,
 .checkbox_hide,
 .main__promo-container,
