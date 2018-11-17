@@ -226,18 +226,14 @@ export class PromoModel {
 	resizeContent() {
 
 		let windowHeight = $(window).outerHeight(true),
-			pageHeight = $('.page').outerHeight(true),
-			mainHeight = $('.main').outerHeight(true);
+			headerHeight = $('.header').outerHeight(true),
+			footerHeight = $('.footer').outerHeight(true);
 
-		let resultHeight;
+		let mainHeight = windowHeight - headerHeight - footerHeight;
 
-		if (windowHeight > 500) {
-			resultHeight = mainHeight + windowHeight - pageHeight;
-		} else {
-			resultHeight = 400;
-		}
 
-		this.changes.pub('changeContentHeight', resultHeight);
+
+		this.changes.pub('changeContentHeight', mainHeight);
 	}
 
 }
