@@ -3,6 +3,10 @@
 //контроллер окна вывода данных уровня ПРОЕКТ (правая часть)
 export class OutputController {
 	constructor(model) {
+		// предварительно отписываемся от событий
+		$('#SAVE-BUTTON, #CREATE-BUTTON, #RUN-BUTTON, #LOGOUT-BUTTON').unbind('click');
+		$('.main__user-container').unbind('keypress');
+		$('#AUTO-UPDATE').unbind('change');
 		this.myModel = model;
 
 		//следим за вводом данных в поля
@@ -30,6 +34,9 @@ export class OutputController {
 		//следим за изменением статуса чекбокса автообновления
 		$('#AUTO-UPDATE').change(this.autoUpdateChecked.bind(this));
 
+		//следим за нажатием кнопки создания нового проекта
+		$('#CREATE-BUTTON')
+			.click(this.createNewProject.bind(this));
 	}
 
 	showOutput() {
@@ -56,4 +63,8 @@ export class OutputController {
 		this.myModel.logOut();
 	}
 
+	createNewProject() {		
+		//обращаемся к модели, чтобы она начала создание проекта
+		this.myModel.startNewProject();		
+	}
 }
