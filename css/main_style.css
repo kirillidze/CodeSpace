@@ -30,6 +30,22 @@
 	display: none;
 	cursor: pointer;
 }
+.header__title {
+	padding: 0 0 0 10px;
+	font-size: 1.5em;
+	display: none;
+}
+.header__title__username {
+	display: inline-block;
+	display: none;
+	cursor: default;
+}
+.header__title__projectname {
+	display: inline-block;
+	color: #76dae8;
+	cursor: text;
+	display: none;
+}
 .main {
 	background-color: #181818;
 	height: 800px;
@@ -112,6 +128,17 @@
 }
 .save__message {
 	text-align: center;
+}
+.layout__save__message {
+	display: none;
+	position: fixed;
+	background: black;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	opacity: 0.5;
+	z-index: 3000;
 }
 
 /* Стилевые свойства попапа Входа/Регистрации */

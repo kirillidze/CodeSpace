@@ -55,6 +55,14 @@ export class PromoView {
 		$('.layout')
 			.css('background-image', `url(${this.myModel.layoutLink})`);
 
+		//скрываем имя пользователя и название проекта
+		$('.header__title, .header__title__username, .header__title__projectname')
+			.css('display', 'none');
+
+	}
+
+	updateContentHeight(height) {
+		$('.main').height(height);
 	}
 
 	updateContentHeight(height) {

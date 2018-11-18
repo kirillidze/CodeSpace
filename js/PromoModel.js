@@ -193,7 +193,8 @@ export class PromoModel {
 						"project1": {
 							"html": "",
 							"css": "",
-							"js": ""
+							"js": "",
+							"title": "Untitled"
 						}
 					}
 				};
@@ -231,9 +232,8 @@ export class PromoModel {
 
 		let mainHeight = windowHeight - headerHeight - footerHeight;
 
-
-
 		this.changes.pub('changeContentHeight', mainHeight);
 	}
 
 }
+

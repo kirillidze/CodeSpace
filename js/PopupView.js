@@ -35,7 +35,9 @@ export class PopupView {
 	showErrorLogIn() {
 		$('.popup__error_logIn').css('display', 'inline-block');
 	}
+  
 	showErrorSignUp() {
 		$('.popup__error_signUp').css('display', 'inline-block');
 	}
 }
+

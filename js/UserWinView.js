@@ -3,10 +3,21 @@
 //представление окон ввода данных уровня ПРОЕКТ (левая часть)
 export class UserWinView {
 	constructor(model) {
+		//отписываем отслеживание
+		$('.header__title__projectname').unbind();
 		this.myModel = model;
 		//подписываемся на изменения
 		this.myModel.changes.sub('changeOnload', this.updateWin.bind(this));
 		this.myModel.changes.sub('contentSaved', this.showSaveMessage.bind(this));
+		//следим за двойным кликом по имени проекта
+		$('.header__title__projectname')
+			.dblclick(this.dblclickFunc.bind(this));
+		//следим за уходом с имени проекта (редактирование закончено)	
+		$('.header__title__projectname')
+			.blur(this.blurFunc.bind(this));
+		//следим за нажатием клавиш на имени проекта (Escape и Enter будут значить, что редактирование закончено)	
+		$('.header__title__projectname')
+			.keydown(this.keydownFunc.bind(this));
 	}
 
 	updateWin(data) {
@@ -21,6 +32,8 @@ export class UserWinView {
 		$('#SAVE-BUTTON')
 			.css('display', 'inline-block');
 		$('#LOGOUT-BUTTON')
+			.css('display', 'inline-block');
+		$('#CREATE-BUTTON')
 			.css('display', 'inline-block');
 
 		//показываем окна ввода и вывода
@@ -39,6 +52,7 @@ export class UserWinView {
 		ace.edit("HTML").setValue(data.html);
 		ace.edit("CSS").setValue(data.css);
 		ace.edit("JS").setValue(data.js);
+		$('.header__title__projectname').text(data.title);
 		$('#AUTO-UPDATE').prop('checked', data.autoUpdate);
 
 		//показываем или прячем кнопку автообновления
@@ -47,11 +61,38 @@ export class UserWinView {
 		} else {
 			$('#RUN-BUTTON').show(0);
 		}
+		//показываем имя пользователя и имя проекта
+		$('.header__title')
+			.css('display', 'block');
+		$('.header__title__username, .header__title__projectname')
+			.css('display', 'inline-block');
+		$('.header__title__username')
+			.text(`${this.myModel.user} / `);
 	}
 	showSaveMessage() {
 		//показываем на 3сек сообщение о сохранении
-		$('.save, .layout')
+		$('.save, .layout__save__message')
 			.css('display', 'block')
-			.fadeOut(4000);
+			.fadeOut(3000);
 	}
+	dblclickFunc(e) {
+		// двойной клик открывает редактирование
+		$('.header__title__projectname')
+			.attr("contentEditable", "true")
+			.focus();
+	}
+	blurFunc(e) {
+		// потеря фокуса закрывает редактирование
+		$('.header__title__projectname')
+			.attr("contentEditable", "false");
+		$('body').focus();			
+	}
+	keydownFunc(e) {
+		// "Escape"	и "Enter" закрывают редактирование	
+		if (e.key == "Escape" || e.key == "Enter") {
+			e.preventDefault();
+			$('.header__title__projectname').attr("contentEditable", "false");
+			$('body').focus();                 
+		} 
+	}	
 }
