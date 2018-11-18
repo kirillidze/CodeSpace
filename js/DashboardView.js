@@ -54,9 +54,18 @@ export class DashboardView {
 				class: 'link',
 				href: '#' + key,
 				onclick: '(e) => {e.preventDefault();}',
-				text: key
+				text: data[key].title
 			}).appendTo($('.main__projects-list'));
 			$('<br>').appendTo($('.main__projects-list'));
 		}
+
+		//показываем имя пользователя, скрываем имя проекта
+		$('.header__title, .header__title__username')
+			.css('display', 'block');
+		$('.header__title__projectname')
+			.css('display', 'none');
+		$('.header__title__username')
+			.text(this.myModel.user);
 	}
 }
+
