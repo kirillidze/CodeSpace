@@ -17,6 +17,26 @@ export class PromoModel {
 		this.preloadedImagesH = {}; // ключ - имя предзагруженного изображения
 		this.changes = new PubSubService();
 
+		// создадим промис заранее
+		this.createPromise = (context, data) => {
+			return new Promise((resolve, reject) => {
+				try {
+					$.ajax({
+						url: ajaxHandlerScript,
+						type: 'POST',
+						cache: false,
+						dataType: 'json',
+						context: context,
+						data: data,
+						success: resolve,
+						error: reject
+					});
+				} catch (ex) {
+					console.log(ex);
+				}
+			});
+		};
+
 		//функция валидации
 		this.userValidation = function(value, elem, regExp) {
 			return regExp.test(value);
@@ -45,53 +65,35 @@ export class PromoModel {
 
 	loadServerData() {
 		//получаем данные с сервера
-		let getProjectInfo = function() {
-			return new Promise((resolve, reject) => {
-				try {
-					$.ajax({
-						url: ajaxHandlerScript,
-						type: 'POST',
-						dataType: 'json',
-						cache: false,
-						data: {
-							f: 'READ',
-							n: 'CodeSpace'
-						},
-						success: resolve,
-						error: reject
-					});
-				} catch (ex) {
-					console.log(ex);
+		var self = this; // контекст для запроса
+		//запрос на чтение
+		this.createPromise(self, {
+				f: 'READ',
+				n: 'CodeSpace'
+			})
+			.then(response => {
+				if (response.error !== undefined) {
+					alert(response.error);
+				} else if (response !== "") {
+					// ответ с сервера
+					let dataFromServer = JSON.parse(response.result);
+
+					//создаём массив хэшей пользователь/пароль
+					for (let user in dataFromServer) {
+
+						this.users.push({
+							userName: user,
+							password: dataFromServer[user].password
+						});
+					}
+
+					this.changes.pub('changeOnload', 'changesWasPublished');
 				}
+			})
+			.catch(error => {
+				console.log("На этапе запроса на сервер случилась ошибка: " + error);
 			});
-		};
 
-		getProjectInfo().then(this._readReady.bind(this), this._errorHandler.bind(this));
-	}
-
-	_readReady(callresult) {
-		if (callresult.error !== undefined)
-			alert(callresult.error);
-		else if (callresult.result !== "") {
-
-			let dataFromServer = JSON.parse(callresult.result);
-
-			//создаём массив хэшей пользователь/пароль
-			for (let user in dataFromServer) {
-
-				this.users.push({
-					userName: user,
-					password: dataFromServer[user].password
-				});
-			}
-
-			this.changes.pub('changeOnload', 'changesWasPublished');
-
-		}
-	}
-
-	_errorHandler(jqXHR) {
-		alert(jqXHR.status + ' ' + jqXHR.statusText);
 	}
 
 	preloadImage(fn) {
@@ -131,5 +133,108 @@ export class PromoModel {
 
 	}
 
-}
+	setSignUpInfo() {
+		//стираем предыдущее имя юзера для повторного поиска
+		this.activeUser = null;
 
+		this.userNick = $('.popup__text-place[name="user-nick"]').val();
+		this.userPass = $('.popup__text-place[name="user-pass"]').val();
+
+		for (let i = 0; i < this.users.length; i++) {
+			//если такой ник уже есть, то помечаем
+			//что это имя не может использоваться
+			if (this.users[i].userName == this.userNick) {
+				this.activeUser = false;
+				break;
+			} else {
+				this.activeUser = this.userNick;
+			}
+		}
+
+		//проверяем на наличие ошибки валидации
+		let validateError = $('.popup__text-place')
+			.hasClass('error');
+		//и если она есть, то ничего не делаем
+		if (validateError) return;
+
+		//если ник не занят и нет ошибки валидации, то добавляем его в базу и сохраняем в localStorage
+		if (this.activeUser) {
+			localStorage.user = this.activeUser + '';
+			this.createUser(this.userNick, this.userPass);
+		} else {
+			this.changes.pub('userWasFound', 'changesWasPublished');
+		}
+
+	}
+
+	createUser(user, pass) {
+
+		//обращаемся к серверу и сохраняем данные
+		var self = this; // сохраняем контекст
+
+		// отправляем запрос на чтение и изменение
+		this.createPromise(self, {
+				f: 'LOCKGET',
+				n: 'CodeSpace',
+				p: 123
+			})
+			.then(response => {
+				// ответ с сервера
+				let oldData = JSON.parse(response.result);
+				// формируем новую запись
+
+				oldData[user] = {
+					"password": pass,
+					"settings": {
+						"autoUpdate": true,
+						"autoSave": false
+					},
+					"projects": {
+						"project1": {
+							"html": "",
+							"css": "",
+							"js": "",
+							"title": "Untitled"
+						}
+					}
+				};
+
+				// отправляем новые данные на сервер
+				return this.createPromise(self, {
+						f: 'UPDATE',
+						n: 'CodeSpace',
+						p: 123,
+						v: JSON.stringify(oldData)
+					})
+					.then(response => {
+						//если все успешно, придет "ок"
+						console.log('Сохранено: ' + response.result);
+						//помечаем, что были данные сохранены
+						if (response.result == 'OK') {
+							this.changes.pub('changeUser', this.activeUser);
+						}
+					})
+					.catch(error => {
+						console.log("На этапе записи на сервер случилась ошибка: " + error);
+					});
+			})
+			.catch(error => {
+				console.log("На этапе запроса на сервер случилась ошибка: " + error);
+			});
+
+	}
+
+	resizeContent() {
+
+		let windowHeight = $(window).outerHeight(true),
+			headerHeight = $('.header').outerHeight(true),
+			footerHeight = $('.footer').outerHeight(true);
+
+		let mainHeight = windowHeight - headerHeight - footerHeight;
+
+
+
+		this.changes.pub('changeContentHeight', mainHeight);
+	}
+
+}
