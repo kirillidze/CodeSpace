@@ -5,10 +5,14 @@ export class PromoView {
 	constructor(model) {
 		this.myModel = model;
 		//подписываемся на изменения
-		this.myModel.changes.sub('changeOnload', this.update.bind(this));
+		this.myModel.changes
+			.sub('changeOnload', this.update.bind(this));
+		this.myModel.changes
+			.sub('changeContentHeight', this.updateContentHeight.bind(this));
 	}
 
 	update() {
+
 		//скрываем кнопки и чекбокс
 		$('#AUTO-UPDATE')
 			.css('display', 'none');
@@ -46,8 +50,18 @@ export class PromoView {
 		$('#SIGNUP-BUTTON')
 			.css('display', 'inline-block');
 
+		$('#LOGIN-BUTTON, #SIGNUP-BUTTON').button();
+
 		$('.layout')
 			.css('background-image', `url(${this.myModel.layoutLink})`);
 
+		//скрываем имя пользователя и название проекта
+		$('.header__title, .header__title__username, .header__title__projectname')
+			.css('display', 'none');
+
+	}
+
+	updateContentHeight(height) {
+		$('.main').height(height);
 	}
 }
