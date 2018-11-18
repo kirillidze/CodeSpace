@@ -64,4 +64,8 @@ export class PromoView {
 	updateContentHeight(height) {
 		$('.main').height(height);
 	}
+
+	updateContentHeight(height) {
+		$('.main').height(height);
+	}
 }

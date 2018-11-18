@@ -110,12 +110,14 @@ export class ProjectModel {
 				let oldData = JSON.parse(response.result);
 				// формируем новую запись
 				oldData[this.user].settings.autoUpdate = this.autoUpdate;
+
 				oldData[this.user].projects[this.project] = {
 					html: ace.edit("HTML").getValue(),
 					css: ace.edit("CSS").getValue(),
 					js: ace.edit("JS").getValue(),
 					title: $('.header__title__projectname').text()
 				}	
+
 				// отправляем новые данные на сервер
 				return this.createPromise(self, {
 						f: 'UPDATE',
@@ -190,3 +192,4 @@ export class ProjectModel {
 		window.location.hash = `#project${Date.now()}`;	
 	}	
 }
+

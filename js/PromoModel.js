@@ -232,9 +232,8 @@ export class PromoModel {
 
 		let mainHeight = windowHeight - headerHeight - footerHeight;
 
-
-
 		this.changes.pub('changeContentHeight', mainHeight);
 	}
 
 }
+
