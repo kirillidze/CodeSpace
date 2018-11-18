@@ -1,5 +1,6 @@
 .page {
 	margin: 0;
+	height: 100%;
 }
 .link {
 	color: #76dae8;
@@ -8,6 +9,9 @@
 
 .link:hover {
 	color: white;
+}
+.button {
+	outline: none;
 }
 .button_hide,
 .checkbox_hide,
@@ -18,7 +22,7 @@
 	display: none;
 }
 .header {
-	min-height: 100px;
+	height: 50px;
 	color: white;
 	background-color: black;
 }
@@ -26,12 +30,28 @@
 	display: none;
 	cursor: pointer;
 }
+.header__title {
+	padding: 0 0 0 10px;
+	font-size: 1.5em;
+	display: none;
+}
+.header__title__username {
+	display: inline-block;
+	display: none;
+	cursor: default;
+}
+.header__title__projectname {
+	display: inline-block;
+	color: #76dae8;
+	cursor: text;
+	display: none;
+}
 .main {
 	background-color: #181818;
-	min-height: 500px;
+	height: 800px;
 }
 .main__promo-container {
-	height: 500px;
+	height: 100%;
 	background-image: url('../img/promo-img.jpg');
 	background-size: cover;
 }
@@ -57,24 +77,26 @@
 	margin: 0 15px;
 	float: left;
 	width: calc(50% - 35px);
+	height: 100%;
+	overflow: auto;
 }
 .main__user-window {
 	width: 100%;
 	height: 200px;
-	resize: none;
 	font-size: 14px;
 }
 .main__ouput-window {
 	display: none;
 	width: 50%;
-	height: 800px;
+	height: 100%;
+	overflow: auto;
 	background-color: white;
 }
 .footer {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
-	min-height: 100px;
+	height: 50px;
 	color: white;
 	background-color: black;
 }
@@ -92,20 +114,31 @@
 	text-align: center;
 }
 
-/* Стилевые свойства cообщениz об успешном сохранении */
+/* Стилевые свойства cообщения об успешном сохранении */
 
 .save {
 	display: none;
 	position: fixed;
-	width: 30%;	
+	width: 30%;
 	top: 20%;
 	left: 35%;
 	z-index: 4000;
 	background-color: white;
-	border-radius: 13px;	
+	border-radius: 13px;
 }
 .save__message {
 	text-align: center;
+}
+.layout__save__message {
+	display: none;
+	position: fixed;
+	background: black;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	opacity: 0.5;
+	z-index: 3000;
 }
 
 /* Стилевые свойства попапа Входа/Регистрации */
@@ -136,12 +169,7 @@
 	padding: 40px;
 
 }
-.popup__authorization {
-	display: none;
-}
-.popup__registration {
-	display: none;
-}
+
 .popup__close-cross {
 	position: fixed;
 	top: 5px;
@@ -157,6 +185,7 @@
 	cursor: pointer;
 }
 .popup__title {
+	display: none;
 	text-align: center;
 }
 .popup__text-place {
@@ -166,7 +195,7 @@
 	outline: none;
 	border: solid lightgrey 1px;
 }
-.popup__error-message {
+.popup__error {
 	display: none;
 	color: red;
 }
@@ -187,6 +216,9 @@
   	box-shadow: 5px 10px 32px 0 lightgrey;
   	transition: 0.5s;
   	cursor: pointer;
+}
+.popup__button_hide {
+	display: none;
 }
 .popup__button:hover {
 	box-shadow: 0 0 0 0 lightgrey;
