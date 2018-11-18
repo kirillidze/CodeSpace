@@ -17,12 +17,11 @@
 .checkbox_hide,
 .main__promo-container,
 .header__dashboard-link,
-.header__projects-list,
-.main__projects-list {
+.header__projects-list {
 	display: none;
 }
 .header {
-	height: 50px;
+	min-height: 50px;
 	color: white;
 	background-color: black;
 }
@@ -31,24 +30,27 @@
 	cursor: pointer;
 }
 .header__title {
-	padding: 0 0 0 10px;
-	font-size: 1.5em;
 	display: none;
+	padding-left: 10px;
+	font-size: 1.5em;
 }
 .header__title__username {
-	display: inline-block;
 	display: none;
 	cursor: default;
 }
 .header__title__projectname {
-	display: inline-block;
+	display: none;
 	color: #76dae8;
 	cursor: text;
-	display: none;
 }
 .main {
 	background-color: #181818;
 	height: 800px;
+}
+.main__projects-list {
+	display: none;
+	height: 100%;
+	overflow: auto;
 }
 .main__promo-container {
 	height: 100%;
@@ -74,11 +76,20 @@
 .main__user-container {
 	display: none;
 	color: white;
-	margin: 0 15px;
 	float: left;
 	width: calc(50% - 35px);
 	height: 100%;
 	overflow: auto;
+}
+.main__window-title {
+	cursor: pointer;
+	margin: 0;
+	padding-left: 10px;
+	border: 1px solid #36383f;
+	transition: .3s;
+}
+.main__window-title:hover {
+	background-color: #1a1b1f;
 }
 .main__user-window {
 	width: 100%;
@@ -96,7 +107,7 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
-	height: 50px;
+	min-height: 50px;
 	color: white;
 	background-color: black;
 }

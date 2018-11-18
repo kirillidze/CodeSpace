@@ -65,16 +65,16 @@ export class ProjectModel {
 						sessionStorage.autoUpdate = JSON.stringify(this.autoUpdate);
 					}
 					// проверим, есть ли такой проект
-					if (dataFromServer[this.user].projects[this.project]) {						
+					if (dataFromServer[this.user].projects[this.project]) {
 						this.html = dataFromServer[this.user].projects[this.project].html;
 						this.css = dataFromServer[this.user].projects[this.project].css;
-						this.js = dataFromServer[this.user].projects[this.project].js;						
-						this.title = dataFromServer[this.user].projects[this.project].title;					 
+						this.js = dataFromServer[this.user].projects[this.project].js;
+						this.title = dataFromServer[this.user].projects[this.project].title;
 					} else {
 						this.html = '';
 						this.css = '';
 						this.js = '';
-						this.title = 'Untitled';
+						this.title = `${this.project}`;
 					}
 					//публикуем изменения при загрузке с сервера (открытие проекта)
 					//т.к. ответ от сервера занимает время, то передаём аргументы
@@ -116,7 +116,7 @@ export class ProjectModel {
 					css: ace.edit("CSS").getValue(),
 					js: ace.edit("JS").getValue(),
 					title: $('.header__title__projectname').text()
-				}	
+				};
 
 				// отправляем новые данные на сервер
 				return this.createPromise(self, {
@@ -186,10 +186,21 @@ export class ProjectModel {
 		this.changes.pub('logOut', 'changesWasPublished');
 	}
 
-	startNewProject() {		
-		//создадим новый роут для проекта		
-		// в хэш передадим '#project' и новую дату для уникальности			
-		window.location.hash = `#project${Date.now()}`;	
-	}	
-}
+	createNewProject() {
+		//создадим дату для уникальности проекта
+		let currentDate = Date.now();
+		//и опубликуем её для последующей навигации в роутинге
+		this.changes.pub('createNewProject', currentDate);
+	}
 
+	resizeContent() {
+
+		let windowHeight = $(window).outerHeight(true),
+			headerHeight = $('.header').outerHeight(true),
+			footerHeight = $('.footer').outerHeight(true);
+
+		let mainHeight = windowHeight - headerHeight - footerHeight;
+
+		this.changes.pub('changeContentHeight', mainHeight);
+	}
+}

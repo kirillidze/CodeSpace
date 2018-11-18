@@ -6,6 +6,8 @@ export class DashboardView {
 		this.myModel = model;
 		//подписываемся на изменения
 		this.myModel.changes.sub('changeListOnload', this.updateList.bind(this));
+		this.myModel.changes
+			.sub('changeContentHeight', this.updateContentHeight.bind(this));
 	}
 
 	updateList(data) {
@@ -47,6 +49,9 @@ export class DashboardView {
 		$('.main__projects-list')
 			.css('display', 'block');
 
+		//стилизуем кнопки
+		$('#LOGOUT-BUTTON, #CREATE-BUTTON').button();
+
 		//создаём ссылки для перехода к разным страницам
 		for (let key in data) {
 			$('<a>', {
@@ -60,12 +65,16 @@ export class DashboardView {
 		}
 
 		//показываем имя пользователя, скрываем имя проекта
-		$('.header__title, .header__title__username')
-			.css('display', 'block');
-		$('.header__title__projectname')
-			.css('display', 'none');
 		$('.header__title__username')
 			.text(this.myModel.user);
+		$('.header__title, .header__title__username')
+			.css('display', 'inline-block');
+		$('.header__title__projectname')
+			.css('display', 'none');
+
+	}
+
+	updateContentHeight(height) {
+		$('.main').height(height);
 	}
 }
-

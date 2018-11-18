@@ -50,6 +50,7 @@ export class PromoView {
 		$('#SIGNUP-BUTTON')
 			.css('display', 'inline-block');
 
+		//стилизуем кнопки
 		$('#LOGIN-BUTTON, #SIGNUP-BUTTON').button();
 
 		$('.layout')
@@ -65,7 +66,4 @@ export class PromoView {
 		$('.main').height(height);
 	}
 
-	updateContentHeight(height) {
-		$('.main').height(height);
-	}
 }

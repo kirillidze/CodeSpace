@@ -1,16 +1,13 @@
 'use strict';
 
-//контроллер уровня DASHBOARD
-export class DashboardController {
+//контроллер уровня ПРОЕКТ
+export class ProjectController {
 	constructor(model) {
 		this.myModel = model;
 
-		$('#CREATE-BUTTON').unbind('click');
-
-		$(window)
-			.resize(
-				this.startResizeContent.bind(this)
-			);
+		// предварительно отписываемся от событий
+		$('#CREATE-BUTTON, #LOGOUT-BUTTON')
+			.unbind('click');
 
 		//следим за нажатием кнопки выхода
 		$('#LOGOUT-BUTTON')
@@ -20,9 +17,15 @@ export class DashboardController {
 
 		//следим за нажатием кнопки создания нового проекта
 		$('#CREATE-BUTTON')
-			.click(
-				this.startCreateNewProject.bind(this)
+			.click(this.startCreateNewProject.bind(this));
+
+		$(window)
+			.resize(
+				this.startResizeContent.bind(this)
 			);
+
+		//следим за уходом со страницы
+		window.onbeforeunload = this.startUnload.bind(this);
 
 		this.startLoading();
 		this.startResizeContent();
@@ -40,6 +43,10 @@ export class DashboardController {
 	startCreateNewProject() {
 		//обращаемся к модели, чтобы она начала создание проекта
 		this.myModel.createNewProject();
+	}
+
+	startUnload(event) {
+		this.myModel.pubUnloadMessage(event);
 	}
 
 	startResizeContent() {

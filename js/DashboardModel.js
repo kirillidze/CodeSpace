@@ -12,59 +12,72 @@ export class DashboardModel {
 		this.changes = new PubSubService();
 		// создадим промис зарание
 		this.createPromise = (context, data) => {
-			return new Promise( (resolve,reject) => {
+			return new Promise((resolve, reject) => {
 				try {
-					$.ajax("https://fe.it-academy.by/AjaxStringStorage2.php",
-					{
+					$.ajax("https://fe.it-academy.by/AjaxStringStorage2.php", {
 						type: 'POST',
-						cache : false, 
-						dataType :'json',
-						context : context,						
-						data : data,                                            
+						cache: false,
+						dataType: 'json',
+						context: context,
+						data: data,
 						success: resolve,
 						error: reject
 					});
 				} catch (ex) {
 					console.log(ex);
-				}				               
-			});				  
-		}; 
+				}
+			});
+		};
 	}
 
 	loadServerData() {
 		//получаем данные с сервера
 		var self = this; // контекст для запроса
 		//запрос на чтение
-		this.createPromise(self, {f : 'READ', n : 'CodeSpace'})
-		.then( response => {  
-			if (response.error != undefined) {
-				alert(response.error);
-			} else if (response != "") {
-				// ответ с сервера				
-				let dataFromServer = JSON.parse(response.result);
-				// проверим, есть ли у этого user-а проекты
-				if (dataFromServer[this.user].projects)				
-				this.list = dataFromServer[this.user].projects;
-			}
-			//публикуем изменения при загрузке с сервера (открытие проекта)
-			//т.к. ответ от сервера занимает время, то передаём аргументы
-			//в публикации явно
-			this.changes.pub('changeListOnload', this.list);
-		})
-		.catch( error => {
-			console.log("На этапе запроса на сервер случилась ошибка: "+error);
-		});
-	}	
+		this.createPromise(self, {
+				f: 'READ',
+				n: 'CodeSpace'
+			})
+			.then(response => {
+				if (response.error !== undefined) {
+					alert(response.error);
+				} else if (response !== "") {
+					// ответ с сервера
+					let dataFromServer = JSON.parse(response.result);
+					// проверим, есть ли у этого user-а проекты
+					if (dataFromServer[this.user].projects)
+						this.list = dataFromServer[this.user].projects;
+				}
+				//публикуем изменения при загрузке с сервера (открытие проекта)
+				//т.к. ответ от сервера занимает время, то передаём аргументы
+				//в публикации явно
+				this.changes.pub('changeListOnload', this.list);
+			})
+			.catch(error => {
+				console.log("На этапе запроса на сервер случилась ошибка: " + error);
+			});
+	}
 
 	logOut() {
 		localStorage.clear();
 		this.changes.pub('logOut', 'changesWasPublished');
 	}
-	
-	startNewProject() {
-		//создадим новый роут для проекта		
-		//в хэш передадим '#project' и новую дату для уникальности	
-		window.location.hash = `#project${Date.now()}`;		
+
+	createNewProject() {
+		//создадим дату для уникальности проекта
+		let currentDate = Date.now();
+		//и опубликуем её для последующей навигации в роутинге
+		this.changes.pub('createNewProject', currentDate);
+	}
+
+	resizeContent() {
+
+		let windowHeight = $(window).outerHeight(true),
+			headerHeight = $('.header').outerHeight(true),
+			footerHeight = $('.footer').outerHeight(true);
+
+		let mainHeight = windowHeight - headerHeight - footerHeight;
+
+		this.changes.pub('changeContentHeight', mainHeight);
 	}
 }
-
