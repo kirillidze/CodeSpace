@@ -43,8 +43,7 @@ export class DashboardModel {
 				// ответ с сервера				
 				let dataFromServer = JSON.parse(response.result);
 				// проверим, есть ли у этого user-а проекты
-				if (dataFromServer[this.user].projects)
-				console.log(dataFromServer[this.user].projects);
+				if (dataFromServer[this.user].projects)				
 				this.list = dataFromServer[this.user].projects;
 			}
 			//публикуем изменения при загрузке с сервера (открытие проекта)
@@ -60,6 +59,12 @@ export class DashboardModel {
 	logOut() {
 		localStorage.clear();
 		this.changes.pub('logOut', 'changesWasPublished');
-	}	
+	}
+	
+	startNewProject() {
+		//создадим новый роут для проекта		
+		//в хэш передадим '#project' и новую дату для уникальности	
+		window.location.hash = `#project${Date.now()}`;		
+	}
 }
 
