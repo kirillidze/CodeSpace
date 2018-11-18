@@ -3,6 +3,7 @@
 //контроллер уровня DASHBOARD
 export class DashboardController {
 	constructor(model) {
+		$('#CREATE-BUTTON').unbind('click');
 		this.myModel = model;
 		this.startLoading();
 
@@ -10,6 +11,12 @@ export class DashboardController {
 		$('#LOGOUT-BUTTON')
 			.click(
 				this.startLogOut.bind(this)
+			);
+
+		//следим за нажатием кнопки создания нового проекта
+		$('#CREATE-BUTTON')
+			.click(
+				this.createNewProject.bind(this)	
 			);
 	}
 
@@ -21,5 +28,9 @@ export class DashboardController {
 	startLogOut() {
 		this.myModel.logOut();
 	}
-}
 
+	createNewProject() {
+		//обращаемся к модели, чтобы она начала создание проекта
+		this.myModel.startNewProject();
+	}
+}
