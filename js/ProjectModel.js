@@ -15,6 +15,7 @@ export class ProjectModel {
 		this.html = null;
 		this.css = null;
 		this.js = null;
+		this.title = null;
 		this.changes = new PubSubService();
 		this.contentSaved = true;
 		this.timer = 0;
@@ -63,10 +64,18 @@ export class ProjectModel {
 						this.autoUpdate = dataFromServer[this.user].settings.autoUpdate;
 						sessionStorage.autoUpdate = JSON.stringify(this.autoUpdate);
 					}
-
-					this.html = dataFromServer[this.user].projects[this.project].html;
-					this.css = dataFromServer[this.user].projects[this.project].css;
-					this.js = dataFromServer[this.user].projects[this.project].js;
+					// проверим, есть ли такой проект
+					if (dataFromServer[this.user].projects[this.project]) {						
+						this.html = dataFromServer[this.user].projects[this.project].html;
+						this.css = dataFromServer[this.user].projects[this.project].css;
+						this.js = dataFromServer[this.user].projects[this.project].js;						
+						this.title = dataFromServer[this.user].projects[this.project].title;					 
+					} else {
+						this.html = '';
+						this.css = '';
+						this.js = '';
+						this.title = 'Untitled';
+					}
 					//публикуем изменения при загрузке с сервера (открытие проекта)
 					//т.к. ответ от сервера занимает время, то передаём аргументы
 					//в публикации явно
@@ -75,6 +84,7 @@ export class ProjectModel {
 							html: this.html,
 							css: this.css,
 							js: this.js,
+							title: this.title,
 							autoUpdate: this.autoUpdate
 						}
 					);
@@ -100,9 +110,12 @@ export class ProjectModel {
 				let oldData = JSON.parse(response.result);
 				// формируем новую запись
 				oldData[this.user].settings.autoUpdate = this.autoUpdate;
-				oldData[this.user].projects[this.project].html = ace.edit("HTML").getValue();
-			  oldData[this.user].projects[this.project].css = ace.edit("CSS").getValue();
-			  oldData[this.user].projects[this.project].js = ace.edit("JS").getValue();
+				oldData[this.user].projects[this.project] = {
+					html: ace.edit("HTML").getValue(),
+					css: ace.edit("CSS").getValue(),
+					js: ace.edit("JS").getValue(),
+					title: $('.header__title__projectname').text()
+				}	
 				// отправляем новые данные на сервер
 				return this.createPromise(self, {
 						f: 'UPDATE',
@@ -114,10 +127,10 @@ export class ProjectModel {
 						//если все успешно, придет "ок"
 						console.log('Сохранение: ' + response.result);
 						//помечаем, что были данные сохранены
-            if (response.result == 'OK') {
-              this.contentSaved = true;
-              this.changes.pub('contentSaved', 'saved');
-            }
+						if (response.result == 'OK') {
+							this.contentSaved = true;
+							this.changes.pub('contentSaved', 'saved');
+						}
 					})
 					.catch(error => {
 						console.log("На этапе записи на сервер случилась ошибка: " + error);
@@ -141,6 +154,7 @@ export class ProjectModel {
 		this.html = ace.edit("HTML").getValue();
 		this.css = ace.edit("CSS").getValue();
 		this.js = ace.edit("JS").getValue();
+		this.title = $('.header__title__projectname').text();
 		this.changes.pub('changeContent', 'changesWasPublished');
 		//помечаем, что были данные изменены, но не сохранены
 		this.contentSaved = false;
@@ -169,5 +183,10 @@ export class ProjectModel {
 		localStorage.clear();
 		this.changes.pub('logOut', 'changesWasPublished');
 	}
-}
 
+	startNewProject() {		
+		//создадим новый роут для проекта		
+		// в хэш передадим '#project' и новую дату для уникальности			
+		window.location.hash = `#project${Date.now()}`;	
+	}	
+}
