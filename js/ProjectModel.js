@@ -95,7 +95,7 @@ export class ProjectModel {
 			});
 	}
 
-	savingData() {
+	savingData(data) {
 		//обращаемся к серверу и сохраняем данные
 		var self = this; // сохраняем контекст
 		// если есть кнопка save, то авторизация пройдена и в хранилище УЖЕ есть имя юзера и проект
@@ -111,12 +111,7 @@ export class ProjectModel {
 				// формируем новую запись
 				oldData[this.user].settings.autoUpdate = this.autoUpdate;
 
-				oldData[this.user].projects[this.project] = {
-					html: ace.edit("HTML").getValue(),
-					css: ace.edit("CSS").getValue(),
-					js: ace.edit("JS").getValue(),
-					title: $('.header__title__projectname').text()
-				};
+				oldData[this.user].projects[this.project] = data;
 
 				// отправляем новые данные на сервер
 				return this.createPromise(self, {
@@ -150,25 +145,25 @@ export class ProjectModel {
 		}
 	}
 
-	setContent() {
+	setContent(data) {
 		//записываем из окон пользователя данные в поле модели
 		//и нотифицируем слушателей об изменениях
-		this.html = ace.edit("HTML").getValue();
-		this.css = ace.edit("CSS").getValue();
-		this.js = ace.edit("JS").getValue();
-		this.title = $('.header__title__projectname').text();
+		this.html = data.html;
+		this.css = data.css;
+		this.js = data.js;
+		this.title = data.title;
 		this.changes.pub('changeContent', 'changesWasPublished');
 		//помечаем, что были данные изменены, но не сохранены
 		this.contentSaved = false;
 	}
 
-	setContentByTimer(e) {
+	setContentByTimer(e, data) {
 		console.log(e.which);
 		if (this.autoUpdate && (e.charCode || (e.which == 13) || (e.which == 8))) {
 			if (this.timer) {
 				clearTimeout(this.timer);
 			}
-			this.timer = setTimeout(this.setContent.bind(this), 500);
+			this.timer = setTimeout(this.setContent.bind(this, data), 500);
 		}
 		//помечаем, что были данные изменены, но не сохранены
 		this.contentSaved = false;
@@ -193,13 +188,9 @@ export class ProjectModel {
 		this.changes.pub('createNewProject', currentDate);
 	}
 
-	resizeContent() {
+	resizeContent(heights) {
 
-		let windowHeight = $(window).outerHeight(true),
-			headerHeight = $('.header').outerHeight(true),
-			footerHeight = $('.footer').outerHeight(true);
-
-		let mainHeight = windowHeight - headerHeight - footerHeight;
+		let mainHeight = heights.window - heights.header - heights.footer;
 
 		this.changes.pub('changeContentHeight', mainHeight);
 	}

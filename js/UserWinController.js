@@ -12,11 +12,11 @@ export class UserWinController {
 
 		//следим за вводом данных в поля
 		$('.main__user-container')
-			.keypress(this.showOutputByTimer.bind(this));
+			.keypress(this.startSetContentByTimer.bind(this));
 
 		//следим за нажатием кнопки обновления
 		$('#RUN-BUTTON')
-			.click(this.showOutput.bind(this));
+			.click(this.startSetContent.bind(this));
 
 		//следим за нажатием кнопки сохранения
 		$('#SAVE-BUTTON')
@@ -25,15 +25,33 @@ export class UserWinController {
 	}
 
 	startSaving() {
-		this.myModel.savingData();
+		//записываем из окон пользователя данные в хэш и передаём методу модели
+		let data = this._getData();
+
+		this.myModel.savingData(data);
 	}
 
-	showOutput() {
-		this.myModel.setContent();
+	_getData() {
+		return {
+			html: ace.edit("HTML").getValue(),
+			css: ace.edit("CSS").getValue(),
+			js: ace.edit("JS").getValue(),
+			title: $('.header__title__projectname').text()
+		};
 	}
 
-	showOutputByTimer(e) {
-		this.myModel.setContentByTimer(e);
+	startSetContent() {
+		//записываем из окон пользователя данные в хэш и передаём методу модели
+		let data = this._getData();
+
+		this.myModel.setContent(data);
+	}
+
+	startSetContentByTimer(e) {
+		//записываем из окон пользователя данные в хэш и передаём методу модели
+		let data = this._getData();
+
+		this.myModel.setContentByTimer(e, data);
 	}
 
 

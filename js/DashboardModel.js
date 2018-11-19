@@ -70,13 +70,9 @@ export class DashboardModel {
 		this.changes.pub('createNewProject', currentDate);
 	}
 
-	resizeContent() {
+	resizeContent(heights) {
 
-		let windowHeight = $(window).outerHeight(true),
-			headerHeight = $('.header').outerHeight(true),
-			footerHeight = $('.footer').outerHeight(true);
-
-		let mainHeight = windowHeight - headerHeight - footerHeight;
+		let mainHeight = heights.window - heights.header - heights.footer;
 
 		this.changes.pub('changeContentHeight', mainHeight);
 	}

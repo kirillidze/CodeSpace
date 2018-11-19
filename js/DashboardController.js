@@ -43,6 +43,13 @@ export class DashboardController {
 	}
 
 	startResizeContent() {
-		this.myModel.resizeContent();
+
+		let heights = {
+			window: $(window).outerHeight(true),
+			header: $('.header').outerHeight(true),
+			footer: $('.footer').outerHeight(true)
+		};
+
+		this.myModel.resizeContent(heights);
 	}
 }
