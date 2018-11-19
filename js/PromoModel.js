@@ -142,7 +142,7 @@ export class PromoModel {
 		for (let i = 0; i < this.users.length; i++) {
 			//если такой ник уже есть, то помечаем
 			//что это имя не может использоваться
-			if (this.users[i].userName == this.userNick) {
+			if (this.users[i].userName.toLowerCase() == this.userNick.toLowerCase()) {
 				this.activeUser = false;
 				break;
 			} else {
