@@ -158,8 +158,11 @@ export class ProjectModel {
 	}
 
 	setContentByTimer(e, data) {
-		console.log(e.which);
-		if (this.autoUpdate && (e.charCode || (e.which == 13) || (e.which == 8))) {
+		//проверяем что нажаты необходиме клавиши
+		let symbol = /^[89]|(13)|(32)|((4|18)[6-9])|(([5-8]|10)\d)|(9[06-9])|(11[01])|((19|22)[0-2])|(219)$/
+			.test(e.which);
+
+		if (this.autoUpdate && symbol) {
 			if (this.timer) {
 				clearTimeout(this.timer);
 			}
@@ -172,12 +175,13 @@ export class ProjectModel {
 	setAutoUpdate(val) {
 		this.autoUpdate = val;
 		//и сохраняем в сессионное хранилище
-		sessionStorage.autoUpdate = this.autoUpdate;
-		this.changes.pub('changeAutoUpdate', 'changesWasPublished');
+		sessionStorage.autoUpdate = val;
+		this.changes.pub('changeAutoUpdate', val);
 	}
 
 	logOut() {
 		localStorage.clear();
+		sessionStorage.clear();
 		this.changes.pub('logOut', 'changesWasPublished');
 	}
 

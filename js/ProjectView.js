@@ -16,12 +16,11 @@ export class ProjectView {
 			.sub('changeContentHeight', this.updateContentHeight.bind(this));
 		this.myModel.changes
 			.sub('contentSaved', this.showSaveMessage.bind(this));
+
 	}
 
-	updatePage() {
+	updatePage(data) {
 		//показываем кнопки и чекбокс
-		$('#AUTO-UPDATE')
-			.css('display', 'inline-block');
 		$('.header__auto-update-label')
 			.css('display', 'inline-block');
 		$('#RUN-BUTTON')
@@ -53,11 +52,13 @@ export class ProjectView {
 		$('.header__title__username')
 			.text(`${this.myModel.user} / `);
 
+		//устанавливаем чекбокс исходя из настроек и отображаем положение
+		$('#AUTO-UPDATE')
+			.prop('checked', data.autoUpdate);
+		this.toggleRunButton(data.autoUpdate);
+
 		//стилизуем элементы
 		$('#LOGOUT-BUTTON, #CREATE-BUTTON, #SAVE-BUTTON, #RUN-BUTTON')
-			.button();
-
-		$('#AUTO-UPDATE')
 			.button();
 
 		$('.header__dashboard-link')
@@ -68,7 +69,6 @@ export class ProjectView {
 				$(this).next().slideToggle();
 			});
 
-
 	}
 
 	showSaveMessage() {
@@ -78,11 +78,19 @@ export class ProjectView {
 			.fadeOut(3000);
 	}
 
-	toggleRunButton() {
-		if (this.myModel.autoUpdate) {
+	toggleRunButton(autoUpdate) {
+		if (autoUpdate) {
 			$('#RUN-BUTTON').hide(0);
+			$('.header__auto-update-label')
+				.css('background-color', '#2783b0');
+			$('.header__auto-update-switcher')
+				.css('left', '35px');
 		} else {
 			$('#RUN-BUTTON').show(0);
+			$('.header__auto-update-label')
+				.css('background-color', '#36383f');
+			$('.header__auto-update-switcher')
+				.css('left', '5px');
 		}
 	}
 

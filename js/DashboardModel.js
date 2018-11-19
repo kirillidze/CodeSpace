@@ -60,6 +60,7 @@ export class DashboardModel {
 
 	logOut() {
 		localStorage.clear();
+		sessionStorage.clear();
 		this.changes.pub('logOut', 'changesWasPublished');
 	}
 

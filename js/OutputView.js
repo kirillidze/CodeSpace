@@ -21,8 +21,8 @@ export class OutputView {
 		this.myModel.changes.sub('changeAutoUpdate', this.toggleAutoUpdateHandler);
 	}
 
-	toggleAutoUpdate() {
-		if (this.myModel.autoUpdate) {
+	toggleAutoUpdate(autoUpdate) {
+		if (autoUpdate) {
 			//сразу обновляем
 			this.updateOutput();
 		}

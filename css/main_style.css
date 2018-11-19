@@ -12,22 +12,42 @@
 }
 .button {
 	outline: none;
+	margin: 0 5px;
 }
 .button_hide,
 .checkbox_hide,
 .main__promo-container,
-.header__dashboard-link,
 .header__projects-list {
 	display: none;
 }
 .header {
+	display: flex;
+	align-items: center;
 	min-height: 50px;
 	color: white;
 	background-color: black;
 }
 .header__auto-update-label {
 	display: none;
+	margin: 0 5px;
 	cursor: pointer;
+	position: relative;
+	width: 60px;
+	height: 38px;
+	border-radius: 6px;
+	background-color: #36383f;
+	transition: .5s;
+}
+.header__auto-update-switcher {
+	display: inline-block;
+	position: absolute;
+	width: 20px;
+	height: 28px;
+	border-radius: 6px;
+	top: 5px;
+	left: 5px;
+	background-color: #fff;
+	transition: .5s;
 }
 .header__title {
 	display: none;
@@ -42,6 +62,10 @@
 	display: none;
 	color: #76dae8;
 	cursor: text;
+}
+.header__dashboard-link {
+	display: none;
+	margin: 0 5px;
 }
 .main {
 	background-color: #181818;
@@ -98,6 +122,7 @@
 }
 .main__ouput-window {
 	display: none;
+	box-sizing: border-box;
 	width: 50%;
 	height: 100%;
 	overflow: auto;

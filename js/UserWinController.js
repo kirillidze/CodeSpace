@@ -8,11 +8,11 @@ export class UserWinController {
 		// предварительно отписываемся от событий
 		$('#SAVE-BUTTON, #RUN-BUTTON')
 			.unbind('click');
-		$('.main__user-container').unbind('keypress');
+		$('.main__user-container').unbind('keyup');
 
 		//следим за вводом данных в поля
 		$('.main__user-container')
-			.keypress(this.startSetContentByTimer.bind(this));
+			.keyup(this.startSetContentByTimer.bind(this));
 
 		//следим за нажатием кнопки обновления
 		$('#RUN-BUTTON')
