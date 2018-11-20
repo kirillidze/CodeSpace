@@ -107,12 +107,12 @@ export class PromoModel {
 		this.preloadedImagesH[fn] = true;
 	}
 
-	setLogInInfo() {
+	setLogInInfo(userNick, userPass) {
 		//стираем предыдущее имя юзера для повторного поиска
 		this.activeUser = null;
 
-		this.userNick = $('.popup__text-place[name="user-nick"]').val();
-		this.userPass = $('.popup__text-place[name="user-pass"]').val();
+		this.userNick = userNick;
+		this.userPass = userPass;
 
 		for (let i = 0; i < this.users.length; i++) {
 			//если пароль и ник совпадают, то запоминаем ник
@@ -120,7 +120,6 @@ export class PromoModel {
 				this.activeUser = this.users[i].userName;
 				break;
 			}
-
 		}
 
 		//если ник получен, то публикуем его и сохраняем в localStorage
@@ -133,17 +132,17 @@ export class PromoModel {
 
 	}
 
-	setSignUpInfo() {
+	setSignUpInfo(userNick, userPass, validateError) {
 		//стираем предыдущее имя юзера для повторного поиска
 		this.activeUser = null;
 
-		this.userNick = $('.popup__text-place[name="user-nick"]').val();
-		this.userPass = $('.popup__text-place[name="user-pass"]').val();
+		this.userNick = userNick;
+		this.userPass = userPass;
 
 		for (let i = 0; i < this.users.length; i++) {
 			//если такой ник уже есть, то помечаем
 			//что это имя не может использоваться
-			if (this.users[i].userName == this.userNick) {
+			if (this.users[i].userName.toLowerCase() == this.userNick.toLowerCase()) {
 				this.activeUser = false;
 				break;
 			} else {
@@ -152,10 +151,10 @@ export class PromoModel {
 		}
 
 		//проверяем на наличие ошибки валидации
-		let validateError = $('.popup__text-place')
-			.hasClass('error');
 		//и если она есть, то ничего не делаем
-		if (validateError) return;
+		if (validateError) {
+			return;
+		}
 
 		//если ник не занят и нет ошибки валидации, то добавляем его в базу и сохраняем в localStorage
 		if (this.activeUser) {
@@ -224,16 +223,11 @@ export class PromoModel {
 
 	}
 
-	resizeContent() {
+	resizeContent(heights) {
 
-		let windowHeight = $(window).outerHeight(true),
-			headerHeight = $('.header').outerHeight(true),
-			footerHeight = $('.footer').outerHeight(true);
-
-		let mainHeight = windowHeight - headerHeight - footerHeight;
+		let mainHeight = heights.window - heights.header - heights.footer;
 
 		this.changes.pub('changeContentHeight', mainHeight);
 	}
 
 }
-
