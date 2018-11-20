@@ -65,16 +65,16 @@ export class ProjectModel {
 						sessionStorage.autoUpdate = JSON.stringify(this.autoUpdate);
 					}
 					// проверим, есть ли такой проект
-					if (dataFromServer[this.user].projects[this.project]) {						
+					if (dataFromServer[this.user].projects[this.project]) {
 						this.html = dataFromServer[this.user].projects[this.project].html;
 						this.css = dataFromServer[this.user].projects[this.project].css;
-						this.js = dataFromServer[this.user].projects[this.project].js;						
-						this.title = dataFromServer[this.user].projects[this.project].title;					 
+						this.js = dataFromServer[this.user].projects[this.project].js;
+						this.title = dataFromServer[this.user].projects[this.project].title;
 					} else {
 						this.html = '';
 						this.css = '';
 						this.js = '';
-						this.title = 'Untitled';
+						this.title = `${this.project}`;
 					}
 					//публикуем изменения при загрузке с сервера (открытие проекта)
 					//т.к. ответ от сервера занимает время, то передаём аргументы
@@ -95,7 +95,7 @@ export class ProjectModel {
 			});
 	}
 
-	savingData() {
+	savingData(data) {
 		//обращаемся к серверу и сохраняем данные
 		var self = this; // сохраняем контекст
 		// если есть кнопка save, то авторизация пройдена и в хранилище УЖЕ есть имя юзера и проект
@@ -111,12 +111,7 @@ export class ProjectModel {
 				// формируем новую запись
 				oldData[this.user].settings.autoUpdate = this.autoUpdate;
 
-				oldData[this.user].projects[this.project] = {
-					html: ace.edit("HTML").getValue(),
-					css: ace.edit("CSS").getValue(),
-					js: ace.edit("JS").getValue(),
-					title: $('.header__title__projectname').text()
-				}	
+				oldData[this.user].projects[this.project] = data;
 
 				// отправляем новые данные на сервер
 				return this.createPromise(self, {
@@ -150,25 +145,28 @@ export class ProjectModel {
 		}
 	}
 
-	setContent() {
+	setContent(data) {
 		//записываем из окон пользователя данные в поле модели
 		//и нотифицируем слушателей об изменениях
-		this.html = ace.edit("HTML").getValue();
-		this.css = ace.edit("CSS").getValue();
-		this.js = ace.edit("JS").getValue();
-		this.title = $('.header__title__projectname').text();
+		this.html = data.html;
+		this.css = data.css;
+		this.js = data.js;
+		this.title = data.title;
 		this.changes.pub('changeContent', 'changesWasPublished');
 		//помечаем, что были данные изменены, но не сохранены
 		this.contentSaved = false;
 	}
 
-	setContentByTimer(e) {
-		console.log(e.which);
-		if (this.autoUpdate && (e.charCode || (e.which == 13) || (e.which == 8))) {
+	setContentByTimer(e, data) {
+		//проверяем что нажаты необходиме клавиши
+		let symbol = /^[89]|(13)|(32)|((4|18)[6-9])|(([5-8]|10)\d)|(9[06-9])|(11[01])|((19|22)[0-2])|(219)$/
+			.test(e.which);
+
+		if (this.autoUpdate && symbol) {
 			if (this.timer) {
 				clearTimeout(this.timer);
 			}
-			this.timer = setTimeout(this.setContent.bind(this), 500);
+			this.timer = setTimeout(this.setContent.bind(this, data), 500);
 		}
 		//помечаем, что были данные изменены, но не сохранены
 		this.contentSaved = false;
@@ -177,19 +175,27 @@ export class ProjectModel {
 	setAutoUpdate(val) {
 		this.autoUpdate = val;
 		//и сохраняем в сессионное хранилище
-		sessionStorage.autoUpdate = this.autoUpdate;
-		this.changes.pub('changeAutoUpdate', 'changesWasPublished');
+		sessionStorage.autoUpdate = val;
+		this.changes.pub('changeAutoUpdate', val);
 	}
 
 	logOut() {
 		localStorage.clear();
+		sessionStorage.clear();
 		this.changes.pub('logOut', 'changesWasPublished');
 	}
 
-	startNewProject() {		
-		//создадим новый роут для проекта		
-		// в хэш передадим '#project' и новую дату для уникальности			
-		window.location.hash = `#project${Date.now()}`;	
-	}	
-}
+	createNewProject() {
+		//создадим дату для уникальности проекта
+		let currentDate = Date.now();
+		//и опубликуем её для последующей навигации в роутинге
+		this.changes.pub('createNewProject', currentDate);
+	}
 
+	resizeContent(heights) {
+
+		let mainHeight = heights.window - heights.header - heights.footer;
+
+		this.changes.pub('changeContentHeight', mainHeight);
+	}
+}
