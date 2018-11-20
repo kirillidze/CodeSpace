@@ -10,6 +10,7 @@ export class PopupView {
 		this.myModel.changes.sub('changeUser', this.hidePopup.bind(this));
 		this.myModel.changes.sub('dataNotFound', this.showErrorLogIn.bind(this));
 		this.myModel.changes.sub('userWasFound', this.showErrorSignUp.bind(this));
+		this.myModel.changes.sub('changePopupData', this.hideErrorSignUp.bind(this));
 	}
 
 	showPopup(button) {
@@ -35,9 +36,12 @@ export class PopupView {
 	showErrorLogIn() {
 		$('.popup__error_logIn').css('display', 'inline-block');
 	}
-  
+
 	showErrorSignUp() {
 		$('.popup__error_signUp').css('display', 'inline-block');
 	}
-}
 
+	hideErrorSignUp() {
+		$('.popup__error_signUp').css('display', 'none');
+	}
+}
