@@ -13,22 +13,18 @@ export class OutputView {
 		this.newCss = '';
 
 		this.updateOutputHandler = this.updateOutput.bind(this);
-		this.toggleRunButtonHandler = this.toggleRunButton.bind(this);
+		this.toggleAutoUpdateHandler = this.toggleAutoUpdate.bind(this);
 
 		//подписываемся на изменения
 		this.myModel.changes.sub('changeOnload', this.updateOutputHandler);
 		this.myModel.changes.sub('changeContent', this.updateOutputHandler);
-		this.myModel.changes.sub('changeAutoUpdate', this.toggleRunButtonHandler);
+		this.myModel.changes.sub('changeAutoUpdate', this.toggleAutoUpdateHandler);
 	}
 
-	toggleRunButton() {
-		if (this.myModel.autoUpdate) {
-			$('#RUN-BUTTON').hide(0);
-			//и сразу обновляем
+	toggleAutoUpdate(autoUpdate) {
+		if (autoUpdate) {
+			//сразу обновляем
 			this.updateOutput();
-		} else {
-			$('#RUN-BUTTON').show(0);
-
 		}
 	}
 
@@ -80,7 +76,7 @@ export class OutputView {
 		this.myModel.changes
 			.remove('changeContent', this.updateOutputHandler);
 		this.myModel.changes
-			.remove('changeAutoUpdate', this.toggleRunButtonHandler);
+			.remove('changeAutoUpdate', this.toggleAutoUpdateHandler);
 	}
 
 }
