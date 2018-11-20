@@ -128,6 +128,29 @@
 	overflow: auto;
 	background-color: white;
 }
+.main__projects-list__wrapper {	
+	padding: 5px 0 0 5px; 
+	font-size: 1.2em; 	
+	position: relative;
+	width: 50%;
+}
+.main__projects-list__wrapper .link {
+	padding-left: 50px;
+	display: block;
+	width: 50%;
+}
+.main__projects-list__delete {
+	color: rgb(173, 2, 2);	
+	position: absolute;		
+	display: none;
+}
+.main__projects-list__delete:hover {
+	color: rgb(250, 4, 4);
+	cursor: pointer;	
+}
+.main__projects-list__wrapper:hover .main__projects-list__delete{
+	display: block;
+}
 .footer {
 	display: flex;
 	flex-direction: column;
@@ -162,8 +185,10 @@
 	background-color: white;
 	border-radius: 13px;
 }
-.save__message {
+.save__message,
+.delete__message {
 	text-align: center;
+	display: none;
 }
 .layout__save__message {
 	display: none;
@@ -260,3 +285,4 @@
 	box-shadow: 0 0 0 0 lightgrey;
 	background-position: 0 0;
 }
+

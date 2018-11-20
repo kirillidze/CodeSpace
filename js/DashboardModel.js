@@ -77,4 +77,42 @@ export class DashboardModel {
 
 		this.changes.pub('changeContentHeight', mainHeight);
 	}
+
+	deleteProject(projectName) {
+		//обращаемся к серверу и сохраняем данные
+		var self = this; // сохраняем контекст		
+		// отправляем запрос на чтение и изменение
+		this.createPromise(self, {
+				f: 'LOCKGET',
+				n: 'CodeSpace',
+				p: 123
+			})
+			.then(response => {
+				// ответ с сервера
+				let oldData = JSON.parse(response.result);
+				// удаляем проект
+				delete oldData[this.user].projects[projectName];
+				// отправляем новые данные на сервер
+				return this.createPromise(self, {
+						f: 'UPDATE',
+						n: 'CodeSpace',
+						p: 123,
+						v: JSON.stringify(oldData)
+					})
+					.then(response => {
+						//если все успешно, придет "ок"
+						console.log('Удалено: ' + response.result);
+						// удалили проект - оповестим представление, чтобы обновило страницу и показало сообщение 
+						if (response.result == 'OK') {							
+							this.changes.pub('changeProjectList', projectName);
+						}
+					})
+					.catch(error => {
+						console.log("На этапе записи на сервер случилась ошибка: " + error);
+					});
+			})
+			.catch(error => {
+				console.log("На этапе запроса на сервер случилась ошибка: " + error);
+			});
+	}
 }

@@ -5,6 +5,9 @@ export class ProjectView {
 	constructor(model) {
 		this.myModel = model;
 
+		// отпишемся от отслеживания клика по элементу
+		$('.main__window-title').unbind();
+
 		this.toggleRunButtonHandler = this.toggleRunButton.bind(this);
 
 		//подписываемся на изменения
@@ -68,14 +71,13 @@ export class ProjectView {
 			.click(function() {
 				$(this).next().slideToggle();
 			});
-
 	}
 
 	showSaveMessage() {
 		//показываем на 3сек сообщение о сохранении
-		$('.save, .layout__save__message')
+		$('.save, .save__message, .layout__save__message')
 			.css('display', 'block')
-			.fadeOut(3000);
+			.fadeOut(3000, 'easeInQuart');
 	}
 
 	toggleRunButton(autoUpdate) {

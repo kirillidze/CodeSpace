@@ -54,5 +54,5 @@ export class UserWinController {
 		this.myModel.setContentByTimer(e, data);
 	}
 
-
 }
+
