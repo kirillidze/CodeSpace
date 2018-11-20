@@ -22,19 +22,22 @@
 </head>
 <body class="page">
 	<header class="header">
+		<div class="header__title">
+			<div class="header__title__username">UserName</div>
+			<div class="header__title__projectname" title="double-click to change the project name">Untitled</div>
+		</div>
+		<input id="AUTO-UPDATE" class="checkbox checkbox_hide" type="checkbox">
+		<label for="AUTO-UPDATE" class="header__auto-update-label" title="Auto-Updating Preview">
+			<span class="header__auto-update-switcher">
+			</span>
+		</label>
+		<button id="RUN-BUTTON" class="button button_hide">Run</button>
+		<button id="SAVE-BUTTON" class="button button_hide">Save</button>
+		<button id="CREATE-BUTTON" class="button button_hide">Create</button>
+		<a class="header__dashboard-link" href="#dashboard">Dashboard</a>
 		<button id="LOGIN-BUTTON" class="button button_hide">Log In</button>
 		<button id="SIGNUP-BUTTON" class="button button_hide">Sign Up</button>
 		<button id="LOGOUT-BUTTON" class="button button_hide">Log Out</button>
-		<input id="AUTO-UPDATE" class="checkbox checkbox_hide" type="checkbox">
-		<label for="AUTO-UPDATE" class="header__auto-update-label">Auto-Updating Preview</label>
-		<button id="RUN-BUTTON" class="button button_hide">Run</button>
-		<button id="SAVE-BUTTON" class="button button_hide">Save</button>
-		<button id="CREATE-BUTTON" class="button button_hide">CREATE</button>
-		<a class="header__dashboard-link" href="#dashboard">Dashboard</a>
-		<div class="header__title">
-			<div class="header__title__username">UserName</div>
-			<div class="header__title__projectname">Untitled</div>
-		</div>
 	</header>
 
 	<main class="main">
@@ -47,18 +50,19 @@
 		</div>
 		<div class="main__projects-list"></div>
 		<div class="main__user-container">
-			<p>HTML:</p>
+			<div class="main__window-title"><h3>HTML:</h3></div>
 			<div id="HTML" class="main__user-window"></div>
-			<p>CSS:</p>
+			<div class="main__window-title"><h3>CSS:</h3></div>
 			<div id="CSS" class="main__user-window"></div>
-			<p>JS:</p>
+			<div class="main__window-title"><h3>JS:</h3></div>
 			<div id="JS" class="main__user-window"></div>
 		</div>
 		<iframe id="OUTPUT" class="main__ouput-window" src=""></iframe>
 
-		<!-- Сообщение об успешном сохранении -->
+		<!-- Сообщение об успешном сохранении / удалении -->
 		<div class="save">
 			<h3 class="save__message">The changes have been successfully saved!</h3>
+			<h3 class="delete__message">The project has been successfully deleted!</h3>
 		</div>
 		<div class="layout__save__message"></div>
 
@@ -95,3 +99,4 @@
 
 </body>
 </html>
+
