@@ -3,9 +3,14 @@
 //контроллер уровня DASHBOARD
 export class DashboardController {
 	constructor(model) {
-		$('#CREATE-BUTTON').unbind('click');
 		this.myModel = model;
-		this.startLoading();
+
+		$('#CREATE-BUTTON, .main__projects-list').unbind('click');
+		
+		$(window)
+			.resize(
+				this.startResizeContent.bind(this)
+			);
 
 		//следим за нажатием кнопки выхода
 		$('#LOGOUT-BUTTON')
@@ -16,8 +21,15 @@ export class DashboardController {
 		//следим за нажатием кнопки создания нового проекта
 		$('#CREATE-BUTTON')
 			.click(
-				this.createNewProject.bind(this)	
+				this.startCreateNewProject.bind(this)
 			);
+
+		this.startLoading();
+		this.startResizeContent();
+
+		//следим за нажатием на удаление проекта
+		$('.main__projects-list')
+			.bind('click', this.deleteProject.bind(this));		
 	}
 
 	startLoading() {
@@ -29,8 +41,27 @@ export class DashboardController {
 		this.myModel.logOut();
 	}
 
-	createNewProject() {
+	startCreateNewProject() {
 		//обращаемся к модели, чтобы она начала создание проекта
-		this.myModel.startNewProject();
+		this.myModel.createNewProject();
+	}
+
+	startResizeContent() {
+
+		let heights = {
+			window: $(window).outerHeight(true),
+			header: $('.header').outerHeight(true),
+			footer: $('.footer').outerHeight(true)
+		};
+
+		this.myModel.resizeContent(heights);
+	}
+	deleteProject(event) {
+		//нас интересуют только клики по элементу с атрибутом 'data-hash'
+		let targetAttribute = event.target.getAttribute('data-hash');	
+		if (targetAttribute) {
+			// передаем модели название проекта на удаление
+			this.myModel.deleteProject(targetAttribute);	
+		} 
 	}
 }
