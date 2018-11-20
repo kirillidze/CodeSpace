@@ -6,6 +6,9 @@ export class DashboardView {
 		this.myModel = model;
 		//подписываемся на изменения
 		this.myModel.changes.sub('changeListOnload', this.updateList.bind(this));
+		this.myModel.changes
+			.sub('changeContentHeight', this.updateContentHeight.bind(this));
+		this.myModel.changes.sub('changeProjectList', this.showMessage.bind(this));
 	}
 
 	updateList(data) {
@@ -47,25 +50,52 @@ export class DashboardView {
 		$('.main__projects-list')
 			.css('display', 'block');
 
+		//стилизуем кнопки
+		$('#LOGOUT-BUTTON, #CREATE-BUTTON').button();
+
 		//создаём ссылки для перехода к разным страницам
 		for (let key in data) {
+			//оборачиваем ссылки в div-ы
+			let divWrapper = $('<div>');
+			divWrapper.addClass('main__projects-list__wrapper');
+			//кнопки для удаления		
+			$('<i>')
+				.addClass('far fa-trash-alt main__projects-list__delete')
+				.attr('data-hash', key)
+				.appendTo(divWrapper);
+			//ссылки на проекты	
 			$('<a>', {
 				type: 'button',
 				class: 'link',
 				href: '#' + key,
 				onclick: '(e) => {e.preventDefault();}',
 				text: data[key].title
-			}).appendTo($('.main__projects-list'));
-			$('<br>').appendTo($('.main__projects-list'));
+			}).appendTo(divWrapper);
+			divWrapper.appendTo($('.main__projects-list'));
 		}
 
 		//показываем имя пользователя, скрываем имя проекта
-		$('.header__title, .header__title__username')
-			.css('display', 'block');
-		$('.header__title__projectname')
-			.css('display', 'none');
 		$('.header__title__username')
 			.text(this.myModel.user);
+		$('.header__title, .header__title__username')
+			.css('display', 'inline-block');
+		$('.header__title__projectname')
+			.css('display', 'none');
+
+	}
+
+	updateContentHeight(height) {
+		$('.main').height(height);
+	}
+
+	showMessage(projectName) {	
+		//после удаления проекта находим div-обертку с удаленным проектом и удаляем его 	
+		$(`[data-hash = ${projectName}]`)
+			.parent()
+			.remove();
+		// показываем сообщение об успешности действий
+		$('.save, .delete__message, .layout__save__message')
+			.css('display', 'block')
+			.fadeOut(3000, 'easeInQuart');
 	}
 }
-
