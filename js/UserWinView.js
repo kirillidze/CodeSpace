@@ -56,4 +56,5 @@ export class UserWinView {
 			$('body').focus();
 		}
 	}
+
 }

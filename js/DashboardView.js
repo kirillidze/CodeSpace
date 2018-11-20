@@ -9,6 +9,7 @@ export class DashboardView {
 		this.myModel.changes
 			.sub('changeContentHeight', this.updateContentHeight.bind(this));
 		this.myModel.changes.sub('changeProjectList', this.showMessage.bind(this));
+
 	}
 
 	updateList(data) {
@@ -81,7 +82,6 @@ export class DashboardView {
 			.css('display', 'inline-block');
 		$('.header__title__projectname')
 			.css('display', 'none');
-
 	}
 
 	updateContentHeight(height) {
@@ -89,6 +89,8 @@ export class DashboardView {
 	}
 
 	showMessage(projectName) {	
+    //разбить функцию на две
+    
 		//после удаления проекта находим div-обертку с удаленным проектом и удаляем его 	
 		$(`[data-hash = ${projectName}]`)
 			.parent()
@@ -99,3 +101,4 @@ export class DashboardView {
 			.fadeOut(3000, 'easeInQuart');
 	}
 }
+

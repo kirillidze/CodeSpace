@@ -45,3 +45,4 @@ export class PopupView {
 		$('.popup__error_signUp').css('display', 'none');
 	}
 }
+

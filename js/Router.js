@@ -127,7 +127,7 @@ export class Router {
 					.sub('logOut', this.logOutUser.bind(this));
 				this.modelOfList.changes
 					.sub('createNewProject', this.navigateToNewProject.bind(this));
-						
+
 			} else {
 
 				//отписываем предыдущие представления от изменений модели
@@ -183,4 +183,5 @@ export class Router {
 	navigateToNewProject(date) {
 		this.navigateTo(`#project${date}`);
 	}
+
 }

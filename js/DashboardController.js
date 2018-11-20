@@ -30,6 +30,7 @@ export class DashboardController {
 		//следим за нажатием на удаление проекта
 		$('.main__projects-list')
 			.bind('click', this.deleteProject.bind(this));		
+
 	}
 
 	startLoading() {
@@ -55,13 +56,17 @@ export class DashboardController {
 		};
 
 		this.myModel.resizeContent(heights);
+
 	}
+  
 	deleteProject(event) {
+    //лучше изначально вешать обработчик на нужные элементы, а не на весь список, а потом фильтровать
 		//нас интересуют только клики по элементу с атрибутом 'data-hash'
 		let targetAttribute = event.target.getAttribute('data-hash');	
 		if (targetAttribute) {
 			// передаем модели название проекта на удаление
 			this.myModel.deleteProject(targetAttribute);	
 		} 
+    
 	}
 }
