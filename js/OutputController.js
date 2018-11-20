@@ -12,9 +12,19 @@ export class OutputController {
 
 	}
 
+	_getData() {
+		return {
+			html: ace.edit("HTML").getValue(),
+			css: ace.edit("CSS").getValue(),
+			js: ace.edit("JS").getValue(),
+			autoUpdate: $('#AUTO-UPDATE').prop('checked')
+		};
+	}
+
 	autoUpdateChecked() {
-		this.myModel.setAutoUpdate($('#AUTO-UPDATE').prop('checked'));
+		let data = this._getData();
+
+		this.myModel.setAutoUpdate(data);
 	}
 
 }
-

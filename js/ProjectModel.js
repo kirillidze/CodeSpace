@@ -152,7 +152,7 @@ export class ProjectModel {
 		this.css = data.css;
 		this.js = data.js;
 		this.title = data.title;
-		this.changes.pub('changeContent', 'changesWasPublished');
+		this.changes.pub('changeContent', data);
 		//помечаем, что были данные изменены, но не сохранены
 		this.contentSaved = false;
 	}
@@ -172,11 +172,11 @@ export class ProjectModel {
 		this.contentSaved = false;
 	}
 
-	setAutoUpdate(val) {
-		this.autoUpdate = val;
+	setAutoUpdate(data) {
+		this.autoUpdate = data.autoUpdate;
 		//и сохраняем в сессионное хранилище
-		sessionStorage.autoUpdate = val;
-		this.changes.pub('changeAutoUpdate', val);
+		sessionStorage.autoUpdate = data.autoUpdate;
+		this.changes.pub('changeAutoUpdate', data);
 	}
 
 	logOut() {

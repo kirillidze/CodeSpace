@@ -58,7 +58,7 @@ export class ProjectView {
 		//устанавливаем чекбокс исходя из настроек и отображаем положение
 		$('#AUTO-UPDATE')
 			.prop('checked', data.autoUpdate);
-		this.toggleRunButton(data.autoUpdate);
+		this.toggleRunButton(data);
 
 		//стилизуем элементы
 		$('#LOGOUT-BUTTON, #CREATE-BUTTON, #SAVE-BUTTON, #RUN-BUTTON')
@@ -80,8 +80,8 @@ export class ProjectView {
 			.fadeOut(3000, 'easeInQuart');
 	}
 
-	toggleRunButton(autoUpdate) {
-		if (autoUpdate) {
+	toggleRunButton(data) {
+		if (data.autoUpdate) {
 			$('#RUN-BUTTON').hide(0);
 			$('.header__auto-update-label')
 				.css('background-color', '#2783b0');

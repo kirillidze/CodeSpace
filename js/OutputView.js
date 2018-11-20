@@ -21,10 +21,10 @@ export class OutputView {
 		this.myModel.changes.sub('changeAutoUpdate', this.toggleAutoUpdateHandler);
 	}
 
-	toggleAutoUpdate(autoUpdate) {
-		if (autoUpdate) {
+	toggleAutoUpdate(data) {
+		if (data.autoUpdate) {
 			//сразу обновляем
-			this.updateOutput();
+			this.updateOutput(data);
 		}
 	}
 
@@ -32,7 +32,7 @@ export class OutputView {
 		this.outputDoc.body.innerHTML = ''; //обнуляем body
 		this.outputDoc.head.innerHTML = ''; // обнуляем head
 		this.newScriptArray = [];
-		this.newHTML = this.myModel.html || data.html; // читаем поле html из модели
+		this.newHTML = data.html; // читаем данные html
 		if (this.newHTML) {
 			//если в поле что-то есть, то пытаемся найти там script
 			this.scriptInHTML = this.newHTML
@@ -46,14 +46,14 @@ export class OutputView {
 				this.newScriptArray.push(this.scriptInHTML[i].slice(8, -9));
 			}
 		}
-		// добавляем скрипт из поля JS
-		this.newScriptArray.push(this.myModel.js || data.js);
+		// добавляем данные скрипта JS
+		this.newScriptArray.push(data.js);
 		if (this.newScriptArray.length > 0) {
 			this.newScript = this.newScriptArray.join(';\n');
 		}
 		//убираем undefined
-		if (this.myModel.css || data.css) {
-			this.newCss = this.myModel.css || data.css;
+		if (data.css) {
+			this.newCss = data.css;
 		} else this.newCss = '';
 
 		// записываем во фрейм то, что получилось
