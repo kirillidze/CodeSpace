@@ -29,6 +29,13 @@ import {
 	ProjectModel
 } from "./ProjectModel.js";
 import {
+	ProjectView
+} from "./ProjectView.js";
+import {
+	ProjectController
+} from "./ProjectController.js";
+
+import {
 	UserWinView
 } from "./UserWinView.js";
 import {
@@ -57,7 +64,9 @@ export class Router {
 		this.controllerOfList = null;
 
 		this.modelOfProject = null;
-		this.viewOfuser = null;
+		this.viewOfProject = null;
+		this.controllerOfProject = null;
+		this.viewOfUser = null;
 		this.controllerOfUser = null;
 		this.viewOfOutput = null;
 		this.controllerOfOutput = null;
@@ -78,7 +87,7 @@ export class Router {
 				//иначе переходим по введённому хешу
 				this.navigateTo(document.location.hash);
 			}
-		}
+		}		
 
 	}
 
@@ -116,29 +125,37 @@ export class Router {
 
 				this.modelOfList.changes
 					.sub('logOut', this.logOutUser.bind(this));
+				this.modelOfList.changes
+					.sub('createNewProject', this.navigateToNewProject.bind(this));
+						
 			} else {
-				//надо проверить существует ли такой проект
 
 				//отписываем предыдущие представления от изменений модели
-				if (this.viewOfOutput) {
+				if (this.modelOfProject) {
 					this.viewOfOutput.unsubscribe();
+					this.viewOfProject.unsubscribe();
 				}
 
 				//инициируем общую модель проекта
 				this.modelOfProject = new ProjectModel(route, this.user);
 
 				//инициируем пользовательский MVC проекта (левый)
-				this.viewOfuser = new UserWinView(this.modelOfProject);
+				this.viewOfUser = new UserWinView(this.modelOfProject);
 				this.controllerOfUser = new UserWinController(this.modelOfProject);
 
-				//инициируем MVCвывода данных проекта (правый)
+				//инициируем MVC вывода данных проекта (правый)
 				this.viewOfOutput = new OutputView(this.modelOfProject);
 				this.controllerOfOutput = new OutputController(this.modelOfProject);
 
+				//инициируем общие представление и контроллер проекта
+				this.viewOfProject = new ProjectView(this.modelOfProject);
+				this.controllerOfProject = new ProjectController(this.modelOfProject);
+
 				this.modelOfProject.changes
 					.sub('logOut', this.logOutUser.bind(this));
+				this.modelOfProject.changes
+					.sub('createNewProject', this.navigateToNewProject.bind(this));
 			}
-
 
 		}
 
@@ -161,5 +178,9 @@ export class Router {
 	logOutUser() {
 		this.user = null;
 		this.navigateTo('#promo');
+	}
+
+	navigateToNewProject(date) {
+		this.navigateTo(`#project${date}`);
 	}
 }
