@@ -42,10 +42,22 @@ export class PopupController {
 	}
 
 	startSetLogInInfo() {
-		this.myModel.setLogInInfo();
+		let userNick = $('.popup__text-place[name="user-nick"]').val(),
+			userPass = $('.popup__text-place[name="user-pass"]').val();
+
+		this.myModel.setLogInInfo(userNick, userPass);
 	}
 
 	startSetSignUpInfo() {
-		this.myModel.setSignUpInfo();
+		let userNick = $('.popup__text-place[name="user-nick"]').val(),
+			userPass = $('.popup__text-place[name="user-pass"]').val();
+
+		let validateError = $('.popup__text-place')
+			.hasClass('error');
+
+		this.myModel.changes.pub('changePopupData', 'changesWasPublished');
+
+		this.myModel.setSignUpInfo(userNick, userPass, validateError);
+
 	}
 }
