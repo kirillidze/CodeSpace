@@ -6,7 +6,7 @@ export class DashboardController {
 		this.myModel = model;
 
 		$('#CREATE-BUTTON, .main__projects-list').unbind('click');
-		
+
 		$(window)
 			.resize(
 				this.startResizeContent.bind(this)
@@ -24,12 +24,12 @@ export class DashboardController {
 				this.startCreateNewProject.bind(this)
 			);
 
-		this.startLoading();
-		this.startResizeContent();
-
 		//следим за нажатием на удаление проекта
 		$('.main__projects-list')
-			.bind('click', this.deleteProject.bind(this));		
+			.bind('click', this.deleteProject.bind(this));
+
+		this.startLoading();
+		this.startResizeContent();
 
 	}
 
@@ -58,15 +58,14 @@ export class DashboardController {
 		this.myModel.resizeContent(heights);
 
 	}
-  
+
 	deleteProject(event) {
-    //лучше изначально вешать обработчик на нужные элементы, а не на весь список, а потом фильтровать
 		//нас интересуют только клики по элементу с атрибутом 'data-hash'
-		let targetAttribute = event.target.getAttribute('data-hash');	
+		let targetAttribute = event.target.getAttribute('data-hash');
 		if (targetAttribute) {
 			// передаем модели название проекта на удаление
-			this.myModel.deleteProject(targetAttribute);	
-		} 
-    
+			this.myModel.deleteProject(targetAttribute);
+		}
+
 	}
 }
