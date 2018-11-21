@@ -5,6 +5,10 @@ export class PromoController {
 	constructor(model) {
 		this.myModel = model;
 
+		// предварительно отписываемся от событий
+		$('.header__bars-menu, .header__button-container-layout, #SIGNUP-BUTTON, #LOGIN-BUTTON')
+			.unbind('click');
+
 		$(window)
 			.resize(
 				this.startResizeContent.bind(this)
@@ -20,6 +24,13 @@ export class PromoController {
 		$('#SIGNUP-BUTTON')
 			.click(
 				this.pubClickOnButton.bind(this, 'signUp')
+			);
+
+		//следим за нажатием по бургеру или по слою бургера
+		$('.header__bars-menu, .header__button-container-layout')
+			.click(
+				this.startToggleButtonContainer
+				.bind(this, 'signUp')
 			);
 
 		this.startLoading();
@@ -40,12 +51,19 @@ export class PromoController {
 	startResizeContent() {
 
 		let heights = {
-			window: $(window).outerHeight(true),
-			header: $('.header').outerHeight(true),
-			footer: $('.footer').outerHeight(true)
-		};
+				window: $(window).outerHeight(true),
+				header: $('.header').outerHeight(true),
+				footer: $('.footer').outerHeight(true)
+			},
+			width = $(window).outerWidth();
 
-		this.myModel.resizeContent(heights);
+		this.myModel.resizeContent(heights, width);
+
+	}
+
+	startToggleButtonContainer() {
+		this.myModel.changes
+			.pub('changeButtonContainer', 'changesWasPublished');
 	}
 
 }
