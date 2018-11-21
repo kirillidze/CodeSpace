@@ -22,22 +22,31 @@
 </head>
 <body class="page">
 	<header class="header">
+		<img class="header__logo" src="img/logo.png" height="40" title="CodeSpace">
 		<div class="header__title">
 			<div class="header__title__username">UserName</div>
 			<div class="header__title__projectname" title="double-click to change the project name">Untitled</div>
 		</div>
-		<input id="AUTO-UPDATE" class="checkbox checkbox_hide" type="checkbox">
-		<label for="AUTO-UPDATE" class="header__auto-update-label" title="Auto-Updating Preview">
-			<span class="header__auto-update-switcher">
-			</span>
-		</label>
-		<button id="RUN-BUTTON" class="button button_hide">Run</button>
-		<button id="SAVE-BUTTON" class="button button_hide">Save</button>
-		<button id="CREATE-BUTTON" class="button button_hide">Create</button>
-		<a class="header__dashboard-link" href="#dashboard">Dashboard</a>
-		<button id="LOGIN-BUTTON" class="button button_hide">Log In</button>
-		<button id="SIGNUP-BUTTON" class="button button_hide">Sign Up</button>
-		<button id="LOGOUT-BUTTON" class="button button_hide">Log Out</button>
+		<div class="header__button-container-layout"></div>
+		<div class="header__bars-menu" title="Menu">
+			<i class="header__bars-menu_ico fas fa-bars"></i>
+		</div>
+		<div class="header__button-container">
+			<div class="header__button-panel">
+				<input id="AUTO-UPDATE" class="checkbox checkbox_hide" type="checkbox">
+				<label for="AUTO-UPDATE" class="header__auto-update-label" title="Auto-Updating Preview">
+					<span class="header__auto-update-switcher">
+					</span>
+				</label>
+				<button id="RUN-BUTTON" class="button button_hide">Run</button>
+				<button id="SAVE-BUTTON" class="button button_hide">Save</button>
+				<button id="CREATE-BUTTON" class="button button_hide">Create</button>
+				<a class="header__dashboard-link" href="#dashboard">Dashboard</a>
+				<button id="LOGIN-BUTTON" class="button button_hide">Log In</button>
+				<button id="SIGNUP-BUTTON" class="button button_hide">Sign Up</button>
+				<button id="LOGOUT-BUTTON" class="button button_hide">Log Out</button>
+			</div>
+		</div>
 	</header>
 
 	<main class="main">

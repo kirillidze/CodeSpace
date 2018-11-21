@@ -223,11 +223,17 @@ export class PromoModel {
 
 	}
 
-	resizeContent(heights) {
+	resizeContent(heights, width) {
 
 		let mainHeight = heights.window - heights.header - heights.footer;
 
-		this.changes.pub('changeContentHeight', mainHeight);
+		this.changes
+			.pub('changeContentHeight', mainHeight);
+
+		if (width > 950) {
+			this.changes
+				.pub('changePageWidth', 'changesWasPublished');
+		}
 	}
 
 }

@@ -9,6 +9,12 @@ export class PromoView {
 			.sub('changeOnload', this.update.bind(this));
 		this.myModel.changes
 			.sub('changeContentHeight', this.updateContentHeight.bind(this));
+		this.myModel.changes
+			.sub('changeButtonContainer', this.toggleButtonContainer.bind(this));
+		this.myModel.changes
+			.sub('changePageWidth', this.showButtonContainer.bind(this));
+		this.myModel.changes
+			.sub('changePopup', this.toggleButtonContainer.bind(this));
 	}
 
 	update() {
@@ -66,5 +72,15 @@ export class PromoView {
 		$('.main').height(height);
 	}
 
-}
+	toggleButtonContainer() {
+		//прячем или показываем кнопки и слой
+		$('.header__button-container, .header__button-container-layout')
+			.fadeToggle();
+	}
 
+	showButtonContainer() {
+		$('.header__button-container, .header__button-container-layout')
+			.removeAttr('style');
+	}
+
+}
