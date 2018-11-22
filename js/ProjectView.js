@@ -19,6 +19,12 @@ export class ProjectView {
 			.sub('changeContentHeight', this.updateContentHeight.bind(this));
 		this.myModel.changes
 			.sub('contentSaved', this.showSaveMessage.bind(this));
+		this.myModel.changes
+			.sub('changePageWidth', this.showButtonContainer.bind(this));
+		this.myModel.changes
+			.sub('changeButtonContainer', this.toggleButtonContainer.bind(this));
+		this.myModel.changes
+			.sub('hideButtonContainer', this.toggleButtonContainer.bind(this));
 
 	}
 
@@ -104,6 +110,17 @@ export class ProjectView {
 
 	updateContentHeight(height) {
 		$('.main').height(height);
+	}
+
+	toggleButtonContainer() {
+		//прячем или показываем кнопки и слой
+		$('.header__button-container, .header__button-container-layout')
+			.fadeToggle();
+	}
+
+	showButtonContainer() {
+		$('.header__button-container, .header__button-container-layout')
+			.removeAttr('style');
 	}
 
 }
