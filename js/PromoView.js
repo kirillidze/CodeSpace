@@ -18,7 +18,6 @@ export class PromoView {
 	}
 
 	update() {
-
 		//скрываем кнопки и чекбокс
 		$('#AUTO-UPDATE')
 			.css('display', 'none');
@@ -65,7 +64,6 @@ export class PromoView {
 		//скрываем имя пользователя и название проекта
 		$('.header__title, .header__title__username, .header__title__projectname')
 			.css('display', 'none');
-
 	}
 
 	updateContentHeight(height) {
@@ -84,3 +82,4 @@ export class PromoView {
 	}
 
 }
+
