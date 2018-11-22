@@ -30,7 +30,7 @@ export class PromoController {
 		$('.header__bars-menu, .header__button-container-layout')
 			.click(
 				this.startToggleButtonContainer
-				.bind(this, 'signUp')
+				.bind(this)
 			);
 
 		this.startLoading();
@@ -46,6 +46,9 @@ export class PromoController {
 
 	pubClickOnButton(button) {
 		this.myModel.changes.pub('changePopup', button);
+
+		let width = $(window).outerWidth();
+		this.myModel.changeButtonContainer(width);
 	}
 
 	startResizeContent() {
