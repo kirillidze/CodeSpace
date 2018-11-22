@@ -71,16 +71,21 @@ export class DashboardModel {
 		this.changes.pub('createNewProject', currentDate);
 	}
 
-	resizeContent(heights) {
+	resizeContent(heights, width) {
 
 		let mainHeight = heights.window - heights.header - heights.footer;
 
 		this.changes.pub('changeContentHeight', mainHeight);
+
+		if (width > 950) {
+			this.changes
+				.pub('changePageWidth', 'changesWasPublished');
+		}
 	}
 
 	deleteProject(projectName) {
 		//обращаемся к серверу и сохраняем данные
-		var self = this; // сохраняем контекст		
+		var self = this; // сохраняем контекст
 		// отправляем запрос на чтение и изменение
 		this.createPromise(self, {
 				f: 'LOCKGET',
@@ -102,8 +107,8 @@ export class DashboardModel {
 					.then(response => {
 						//если все успешно, придет "ок"
 						console.log('Удалено: ' + response.result);
-						// удалили проект - оповестим представление, чтобы обновило страницу и показало сообщение 
-						if (response.result == 'OK') {							
+						// удалили проект - оповестим представление, чтобы обновило страницу и показало сообщение
+						if (response.result == 'OK') {
 							this.changes.pub('changeProjectList', projectName);
 						}
 					})
