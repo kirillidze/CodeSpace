@@ -19,6 +19,7 @@ export class OutputController {
 			js: ace.edit("JS").getValue(),
 			autoUpdate: $('#AUTO-UPDATE').prop('checked')
 		};
+
 	}
 
 	autoUpdateChecked() {
