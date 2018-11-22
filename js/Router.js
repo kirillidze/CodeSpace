@@ -87,7 +87,7 @@ export class Router {
 				//иначе переходим по введённому хешу
 				this.navigateTo(document.location.hash);
 			}
-		}		
+		}
 
 	}
 
@@ -99,6 +99,10 @@ export class Router {
 	}
 
 	route(route) {
+
+		//ничего не делаем, если перешли по нерабочей ссылке
+		if (route == '#test') return;
+
 		//удаляем решётку
 		route = route.substr(1);
 
