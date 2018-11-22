@@ -6,7 +6,7 @@ export class ProjectController {
 		this.myModel = model;
 
 		// предварительно отписываемся от событий
-		$('#CREATE-BUTTON, #LOGOUT-BUTTON')
+		$('.header__bars-menu, .header__button-container-layout, .header__dashboard-link, #CREATE-BUTTON, #LOGOUT-BUTTON')
 			.unbind('click');
 
 		//следим за нажатием кнопки выхода
@@ -22,6 +22,19 @@ export class ProjectController {
 		$(window)
 			.resize(
 				this.startResizeContent.bind(this)
+			);
+
+		//следим за нажатием по бургеру или по слою бургера
+		$('.header__bars-menu, .header__button-container-layout')
+			.click(
+				this.startToggleButtonContainer
+				.bind(this)
+			);
+
+		//следим за нажатием по ссыллке dashboard
+		$('.header__dashboard-link')
+			.click(
+				this.startChangeButtonContainer.bind(this)
 			);
 
 		//следим за уходом со страницы
@@ -52,11 +65,25 @@ export class ProjectController {
 	startResizeContent() {
 
 		let heights = {
-			window: $(window).outerHeight(true),
-			header: $('.header').outerHeight(true),
-			footer: $('.footer').outerHeight(true)
-		};
+				window: $(window).outerHeight(true),
+				header: $('.header').outerHeight(true),
+				footer: $('.footer').outerHeight(true)
+			},
+			width = $(window).outerWidth();
 
-		this.myModel.resizeContent(heights);
+		this.myModel.resizeContent(heights, width);
+
 	}
+
+	startToggleButtonContainer() {
+		this.myModel.changes
+			.pub('changeButtonContainer', 'changesWasPublished');
+	}
+
+	startChangeButtonContainer() {
+		let width = $(window).outerWidth();
+		this.myModel.changeButtonContainer(width);
+	}
+
+
 }
