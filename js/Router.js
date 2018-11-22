@@ -48,6 +48,7 @@ import {
 	OutputController
 } from "./OutputController.js";
 
+var ajaxHandlerScript = 'https://fe.it-academy.by/AjaxStringStorage2.php';
 
 export class Router {
 	constructor() {
@@ -70,7 +71,26 @@ export class Router {
 		this.controllerOfUser = null;
 		this.viewOfOutput = null;
 		this.controllerOfOutput = null;
+		this.createdHash = null;
 
+		this.createPromise = (context, data) => {
+			return new Promise((resolve, reject) => {
+				try {
+					$.ajax({
+						url: ajaxHandlerScript,
+						type: 'POST',
+						cache: false,
+						dataType: 'json',
+						context: context,
+						data: data,
+						success: resolve,
+						error: reject
+					});
+				} catch (ex) {
+					console.log(ex);
+				}
+			});
+		};
 		//Подписаться на событие hashchange
 		window.addEventListener('hashchange', this.onhashchange.bind(this));
 
@@ -87,7 +107,7 @@ export class Router {
 				//иначе переходим по введённому хешу
 				this.navigateTo(document.location.hash);
 			}
-		}		
+		}
 
 	}
 
@@ -99,6 +119,10 @@ export class Router {
 	}
 
 	route(route) {
+
+		//ничего не делаем, если перешли по нерабочей ссылке
+		if (route == '#test') return;
+
 		//удаляем решётку
 		route = route.substr(1);
 
@@ -129,43 +153,74 @@ export class Router {
 					.sub('createNewProject', this.navigateToNewProject.bind(this));
 
 			} else {
+				//должен быть user
+				if(this.user) {
+					//получаем данные с сервера
+					var self = this; // контекст для запроса
+					//запрос на чтение
+					this.createPromise(self, {
+						f: 'READ',
+						n: 'CodeSpace'
+					})
+					.then(response => {
+						if (response.error !== undefined) {
+							alert(response.error);
+						} else if (response !== "") {
+							// ответ с сервера
+							let dataFromServer = JSON.parse(response.result),
+								// список хэшей существующих проектов
+								projectList = Object.keys(dataFromServer[this.user].projects);
+								// чтобы пропустить создаваемый проект, добавим его к существующим
+								if (this.createdHash) {
+									projectList.push(this.createdHash);
+								}														
+							for (let i = 0; i < projectList.length; i++) {
+								// если роут равен одному из списка выше, можно показывать страницу
+								if (projectList[i] === route) {
 
-				//отписываем предыдущие представления от изменений модели
-				if (this.modelOfProject) {
-					this.viewOfOutput.unsubscribe();
-					this.viewOfProject.unsubscribe();
-				}
+									//отписываем предыдущие представления от изменений модели
+									if (this.modelOfProject) {
+										this.viewOfOutput.unsubscribe();
+										this.viewOfProject.unsubscribe();
+									}
 
-				//инициируем общую модель проекта
-				this.modelOfProject = new ProjectModel(route, this.user);
+									//инициируем общую модель проекта
+									this.modelOfProject = new ProjectModel(route, this.user);
 
-				//инициируем пользовательский MVC проекта (левый)
-				this.viewOfUser = new UserWinView(this.modelOfProject);
-				this.controllerOfUser = new UserWinController(this.modelOfProject);
+									//инициируем пользовательский MVC проекта (левый)
+									this.viewOfUser = new UserWinView(this.modelOfProject);
+									this.controllerOfUser = new UserWinController(this.modelOfProject);
 
-				//инициируем MVC вывода данных проекта (правый)
-				this.viewOfOutput = new OutputView(this.modelOfProject);
-				this.controllerOfOutput = new OutputController(this.modelOfProject);
+									//инициируем MVC вывода данных проекта (правый)
+									this.viewOfOutput = new OutputView(this.modelOfProject);
+									this.controllerOfOutput = new OutputController(this.modelOfProject);
 
-				//инициируем общие представление и контроллер проекта
-				this.viewOfProject = new ProjectView(this.modelOfProject);
-				this.controllerOfProject = new ProjectController(this.modelOfProject);
+									//инициируем общие представление и контроллер проекта
+									this.viewOfProject = new ProjectView(this.modelOfProject);
+									this.controllerOfProject = new ProjectController(this.modelOfProject);
 
-				this.modelOfProject.changes
-					.sub('logOut', this.logOutUser.bind(this));
-				this.modelOfProject.changes
-					.sub('createNewProject', this.navigateToNewProject.bind(this));
-			}
-
+									this.modelOfProject.changes
+										.sub('logOut', this.logOutUser.bind(this));
+									this.modelOfProject.changes
+										.sub('createNewProject', this.navigateToNewProject.bind(this));
+									break;								
+								} 
+							}							
+						}
+					})
+					.catch(error => {
+						console.log("На этапе запроса на сервер случилась ошибка: " + error);
+					});
+				} else return;				
+			} 
 		}
-
 	}
 
 	navigateTo(route) {
 		// Выполнить начальную навигацию на адрес по умолчанию
 		if (document.location.hash === route) {
 			this.route(route);
-		} else {
+		} else {			
 			document.location.hash = route;
 		}
 	}
@@ -182,6 +237,8 @@ export class Router {
 
 	navigateToNewProject(date) {
 		this.navigateTo(`#project${date}`);
+		//запишем новый хэш, чтобы можно было пройти проверку
+		this.createdHash = `project${date}`;
 	}
 
 }
