@@ -9,6 +9,7 @@ export class UserWinController {
 		$('#SAVE-BUTTON, #RUN-BUTTON')
 			.unbind('click');
 		$('.main__user-container').unbind('keyup');
+		$('.header__title__projectname').unbind();
 
 		//следим за вводом данных в поля
 		$('.main__user-container')
@@ -21,6 +22,16 @@ export class UserWinController {
 		//следим за нажатием кнопки сохранения
 		$('#SAVE-BUTTON')
 			.click(this.startSaving.bind(this));
+
+		//следим за двойным кликом по имени проекта
+		$('.header__title__projectname')
+			.dblclick(this.pubDblclickOnProjectName.bind(this));
+		//следим за уходом с имени проекта (редактирование закончено)
+		$('.header__title__projectname')
+			.blur(this.pubBlurProjectName.bind(this));
+		//следим за нажатием клавиш на имени проекта (Escape и Enter будут значить, что редактирование закончено)
+		$('.header__title__projectname')
+			.keydown(this.pubKeydownInProjectName.bind(this));
 
 	}
 
@@ -54,5 +65,19 @@ export class UserWinController {
 		this.myModel.setContentByTimer(e, data);
 	}
 
-}
+	pubDblclickOnProjectName() {
+		this.myModel.changes
+			.pub('changeByDblclick', 'changesWasPublished');
+	}
 
+	pubBlurProjectName() {
+		this.myModel.changes
+			.pub('changeByBlur', 'changesWasPublished');
+	}
+
+	pubKeydownInProjectName(e) {
+		this.myModel.changes
+			.pub('changeByKeydown', e);
+	}
+
+}
