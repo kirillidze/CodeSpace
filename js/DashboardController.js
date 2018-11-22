@@ -5,7 +5,8 @@ export class DashboardController {
 	constructor(model) {
 		this.myModel = model;
 
-		$('#CREATE-BUTTON, .main__projects-list').unbind('click');
+		// предварительно отписываемся от событий
+		$('.header__bars-menu, .header__button-container-layout, #CREATE-BUTTON, .main__projects-list').unbind('click');
 
 		$(window)
 			.resize(
@@ -27,6 +28,13 @@ export class DashboardController {
 		//следим за нажатием на удаление проекта
 		$('.main__projects-list')
 			.bind('click', this.deleteProject.bind(this));
+
+		//следим за нажатием по бургеру или по слою бургера
+		$('.header__bars-menu, .header__button-container-layout')
+			.click(
+				this.startToggleButtonContainer
+				.bind(this)
+			);
 
 		this.startLoading();
 		this.startResizeContent();
@@ -50,13 +58,19 @@ export class DashboardController {
 	startResizeContent() {
 
 		let heights = {
-			window: $(window).outerHeight(true),
-			header: $('.header').outerHeight(true),
-			footer: $('.footer').outerHeight(true)
-		};
+				window: $(window).outerHeight(true),
+				header: $('.header').outerHeight(true),
+				footer: $('.footer').outerHeight(true)
+			},
+			width = $(window).outerWidth();
 
-		this.myModel.resizeContent(heights);
+		this.myModel.resizeContent(heights, width);
 
+	}
+
+	startToggleButtonContainer() {
+		this.myModel.changes
+			.pub('changeButtonContainer', 'changesWasPublished');
 	}
 
 	deleteProject(event) {
