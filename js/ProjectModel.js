@@ -192,10 +192,22 @@ export class ProjectModel {
 		this.changes.pub('createNewProject', currentDate);
 	}
 
-	resizeContent(heights) {
+	resizeContent(heights, width) {
 
 		let mainHeight = heights.window - heights.header - heights.footer;
 
 		this.changes.pub('changeContentHeight', mainHeight);
+
+		if (width > 950) {
+			this.changes
+				.pub('changePageWidth', 'changesWasPublished');
+		}
+	}
+
+	changeButtonContainer(width) {
+		if (width <= 950) {
+			this.changes
+				.pub('hideButtonContainer', 'changesWasPublished');
+		}
 	}
 }
