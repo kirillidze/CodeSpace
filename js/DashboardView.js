@@ -5,11 +5,18 @@ export class DashboardView {
 	constructor(model) {
 		this.myModel = model;
 		//подписываемся на изменения
-		this.myModel.changes.sub('changeListOnload', this.updateList.bind(this));
+		this.myModel.changes
+			.sub('changeListOnload', this.updateList.bind(this));
 		this.myModel.changes
 			.sub('changeContentHeight', this.updateContentHeight.bind(this));
-		this.myModel.changes.sub('changeProjectList', this.showMessage.bind(this));
-		this.myModel.changes.sub('changeProjectList', this.deleteProjectFromList.bind(this));
+		this.myModel.changes
+			.sub('changeProjectList', this.showMessage.bind(this));
+		this.myModel.changes
+			.sub('changeProjectList', this.deleteProjectFromList.bind(this));
+		this.myModel.changes
+			.sub('changePageWidth', this.showButtonContainer.bind(this));
+		this.myModel.changes
+			.sub('changeButtonContainer', this.toggleButtonContainer.bind(this));
 	}
 
 	updateList(data) {
@@ -59,12 +66,12 @@ export class DashboardView {
 			//оборачиваем ссылки в div-ы
 			let divWrapper = $('<div>');
 			divWrapper.addClass('main__projects-list__wrapper');
-			//кнопки для удаления		
+			//кнопки для удаления
 			$('<i>')
 				.addClass('far fa-trash-alt main__projects-list__delete')
 				.attr('data-hash', key)
 				.appendTo(divWrapper);
-			//ссылки на проекты	
+			//ссылки на проекты
 			$('<a>', {
 				type: 'button',
 				class: 'link',
@@ -88,16 +95,25 @@ export class DashboardView {
 		$('.main').height(height);
 	}
 
-	showMessage() {	
+	showMessage() {
 		// показываем сообщение об успешности действий
 		$('.save, .delete__message, .layout__save__message')
 			.css('display', 'block')
 			.fadeOut(3000, 'easeInQuart');
 	}
 	deleteProjectFromList(projectName) {
-		//после удаления проекта находим div-обертку с удаленным проектом и удаляем его 	
+		//после удаления проекта находим div-обертку с удаленным проектом и удаляем его
 		$(`[data-hash = ${projectName}]`)
 			.parent()
 			.remove();
+	}
+	toggleButtonContainer() {
+		//прячем или показываем кнопки и слой
+		$('.header__button-container, .header__button-container-layout')
+			.fadeToggle();
+	}
+	showButtonContainer() {
+		$('.header__button-container, .header__button-container-layout')
+			.removeAttr('style');
 	}
 }

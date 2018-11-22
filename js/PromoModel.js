@@ -236,4 +236,11 @@ export class PromoModel {
 		}
 	}
 
+	changeButtonContainer(width) {
+		if (width <= 950) {
+			this.changes
+				.pub('hideButtonContainer', 'changesWasPublished');
+		}
+	}
+
 }

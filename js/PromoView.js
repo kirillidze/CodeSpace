@@ -14,7 +14,7 @@ export class PromoView {
 		this.myModel.changes
 			.sub('changePageWidth', this.showButtonContainer.bind(this));
 		this.myModel.changes
-			.sub('changePopup', this.toggleButtonContainer.bind(this));
+			.sub('hideButtonContainer', this.toggleButtonContainer.bind(this));
 	}
 
 	update() {
@@ -81,5 +81,6 @@ export class PromoView {
 			.removeAttr('style');
 	}
 
-}
 
+
+}

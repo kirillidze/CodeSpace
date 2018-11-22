@@ -121,7 +121,7 @@
 	display: none;
 	color: white;
 	float: left;
-	width: calc(50% - 35px);
+	width: calc(50% - 10px);
 	height: 100%;
 	overflow: auto;
 }
