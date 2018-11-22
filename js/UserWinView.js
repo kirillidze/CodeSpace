@@ -3,21 +3,18 @@
 //представление окон ввода данных уровня ПРОЕКТ (левая часть)
 export class UserWinView {
 	constructor(model) {
-		//отписываем отслеживание
-		$('.header__title__projectname').unbind();
 		this.myModel = model;
 		//подписываемся на изменения
-		this.myModel.changes.sub('changeOnload', this.updateWin.bind(this));
+		this.myModel.changes
+			.sub('changeOnload', this.updateWin.bind(this));
 
-		//следим за двойным кликом по имени проекта
-		$('.header__title__projectname')
-			.dblclick(this.dblclickFunc.bind(this));
-		//следим за уходом с имени проекта (редактирование закончено)
-		$('.header__title__projectname')
-			.blur(this.blurFunc.bind(this));
-		//следим за нажатием клавиш на имени проекта (Escape и Enter будут значить, что редактирование закончено)
-		$('.header__title__projectname')
-			.keydown(this.keydownFunc.bind(this));
+		this.myModel.changes
+			.sub('changeByDblclick', this.setEditable.bind(this));
+		this.myModel.changes
+			.sub('changeByBlur', this.removeEditable.bind(this));
+		this.myModel.changes
+			.sub('changeByKeydown', this.removeEditableByKeydown.bind(this));
+
 	}
 
 	updateWin(data) {
@@ -36,25 +33,41 @@ export class UserWinView {
 		}
 	}
 
-	dblclickFunc() {
-		// двойной клик открывает редактирование
+	setEditable(e) {
+		// двойной клик открывает редактирование		
 		$('.header__title__projectname')
-			.attr("contentEditable", "true")
-			.focus();
+			.hide()
+			.next('.header__title__input')
+			.val(
+				$('.header__title__projectname')
+					.text()
+			)
+			.show()
+			.focus();			
 	}
-	blurFunc() {
-		// потеря фокуса закрывает редактирование
-		$('.header__title__projectname')
-			.attr("contentEditable", "false");
-		$('body').focus();
+	removeEditable(e) {
+		// потеря фокуса закрывает редактирование				
+		$('.header__title__input')
+			.hide()
+			.prev('.header__title__projectname')			
+			.show();		
 	}
-	keydownFunc(e) {
-		// "Escape"	и "Enter" закрывают редактирование
-		if (e.key == "Escape" || e.key == "Enter") {
-			e.preventDefault();
-			$('.header__title__projectname').attr("contentEditable", "false");
-			$('body').focus();
-		}
+	removeEditableByKeydown(e) {
+		// "Escape"	и "Enter" закрывают редактирование		
+		if (e.key == "Escape") {
+			$('.header__title__input')
+				.hide()
+				.prev('.header__title__projectname')
+				.show();
+		} else if (e.key == "Enter") {			
+			$('.header__title__input')
+				.hide()
+				.prev('.header__title__projectname')
+				.text(
+					$('.header__title__input')
+						.val()
+				)
+				.show();
+		} else return;			
 	}
-
 }
