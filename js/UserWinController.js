@@ -34,6 +34,7 @@ export class UserWinController {
 		//следим за нажатием клавиш на имени проекта (Escape и Enter будут значить, что редактирование закончено)		
 		$('.header__title__input')
 			.keydown(this.pubKeydownInProjectName.bind(this));
+
 	}
 
 	startSaving() {

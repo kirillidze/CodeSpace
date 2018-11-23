@@ -45,6 +45,7 @@ export class UserWinView {
 			.show()
 			.focus();			
 	}
+
 	removeEditable(e) {
 		// потеря фокуса закрывает редактирование				
 		$('.header__title__input')
@@ -52,6 +53,7 @@ export class UserWinView {
 			.prev('.header__title__projectname')			
 			.show();		
 	}
+  
 	removeEditableByKeydown(e) {
 		// "Escape"	и "Enter" закрывают редактирование		
 		if (e.key == "Escape") {

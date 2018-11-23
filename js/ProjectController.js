@@ -85,5 +85,5 @@ export class ProjectController {
 		this.myModel.changeButtonContainer(width);
 	}
 
-
 }
+
