@@ -89,7 +89,7 @@
 	color:  #76dae8;
 	font-size: 0.9em;
 	border: transparent;
-	max-width: 200px;	
+	max-width: 200px;
 }
 .header__dashboard-link {
 	display: none;
@@ -397,6 +397,9 @@
 	.main__promo-text {
 		width: 90%;
 		font-size: 24pt;
+	}
+	.header__title {
+		font-size: 1.2em;
 	}
 }
 

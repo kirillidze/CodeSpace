@@ -61,6 +61,8 @@ export class ProjectView {
 		$('.header__title__username')
 			.text(`${this.myModel.user} / `);
 
+		$('.header__title__input').hide();
+
 		//устанавливаем чекбокс исходя из настроек и отображаем положение
 		$('#AUTO-UPDATE')
 			.prop('checked', data.autoUpdate);
@@ -124,4 +126,3 @@ export class ProjectView {
 	}
 
 }
-

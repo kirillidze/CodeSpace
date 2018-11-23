@@ -89,6 +89,9 @@ export class DashboardView {
 			.css('display', 'inline-block');
 		$('.header__title__projectname')
 			.css('display', 'none');
+
+		$('.header__title__input').hide();
+
 	}
 
 	updateContentHeight(height) {
