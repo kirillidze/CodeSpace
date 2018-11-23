@@ -26,6 +26,7 @@
 		<div class="header__title">
 			<div class="header__title__username">UserName</div>
 			<div class="header__title__projectname" title="Double-click to change the project name">Untitled</div>
+			<input type="text" maxlength="20" class="header__title__input">
 		</div>
 		<div class="header__button-container-layout"></div>
 		<div class="header__bars-menu" title="Menu">
@@ -83,7 +84,7 @@
 			<h3 class="popup__title popup__title_signUp">Registration</h3>
 			<form id="POPUP-FORM">
 				<input class="popup__text-place" type="text" placeholder="Your nick name" name="user-nick" value="" required><br>
-				<input class="popup__text-place" type="text" placeholder="Your password" name="user-pass" value="" required><br>
+				<input class="popup__text-place" type="password" placeholder="Your password" name="user-pass" value="" required><br>
 				<span class="popup__error popup__error_logIn">There is no user with this password</span><br>
 				<span class="popup__error popup__error_signUp">That name's taken. Please choose another name</span><br>
 				<input class="popup__button popup__button_hide" type="button" name="" value="Log In">

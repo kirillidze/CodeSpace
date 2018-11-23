@@ -81,6 +81,5 @@ export class PromoView {
 			.removeAttr('style');
 	}
 
-
-
 }
+

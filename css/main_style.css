@@ -81,6 +81,15 @@
 	display: none;
 	color: #76dae8;
 	cursor: text;
+	min-width: 50px;
+	min-height: 10px;
+}
+.header__title__input {
+	background: transparent;
+	color:  #76dae8;
+	font-size: 0.9em;
+	border: transparent;
+	max-width: 200px;	
 }
 .header__dashboard-link {
 	display: none;

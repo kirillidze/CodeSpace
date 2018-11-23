@@ -181,7 +181,7 @@ export class PromoModel {
 				// ответ с сервера
 				let oldData = JSON.parse(response.result);
 				// формируем новую запись
-
+				let projectName = 'project' + Date.now();
 				oldData[user] = {
 					"password": pass,
 					"settings": {
@@ -189,11 +189,11 @@ export class PromoModel {
 						"autoSave": false
 					},
 					"projects": {
-						"project1": {
+						[projectName]: {
 							"html": "",
 							"css": "",
 							"js": "",
-							"title": "Untitled"
+							"title": "New Project"
 						}
 					}
 				};
@@ -244,3 +244,4 @@ export class PromoModel {
 	}
 
 }
+

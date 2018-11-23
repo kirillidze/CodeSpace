@@ -33,24 +33,43 @@ export class UserWinView {
 		}
 	}
 
-	setEditable() {
-		// двойной клик открывает редактирование
+	setEditable(e) {
+		// двойной клик открывает редактирование		
 		$('.header__title__projectname')
-			.attr("contentEditable", "true")
-			.focus();
-	}
-	removeEditable() {
-		// потеря фокуса закрывает редактирование
-		$('.header__title__projectname')
-			.attr("contentEditable", "false");
-		$('body').focus();
-	}
-	removeEditableByKeydown(e) {
-		// "Escape"	и "Enter" закрывают редактирование
-		if (e.key == "Escape" || e.key == "Enter") {
-			e.preventDefault();
-			this.removeEditable();
-		}
+			.hide()
+			.next('.header__title__input')
+			.val(
+				$('.header__title__projectname')
+					.text()
+			)
+			.show()
+			.focus();			
 	}
 
+	removeEditable(e) {
+		// потеря фокуса закрывает редактирование				
+		$('.header__title__input')
+			.hide()
+			.prev('.header__title__projectname')			
+			.show();		
+	}
+  
+	removeEditableByKeydown(e) {
+		// "Escape"	и "Enter" закрывают редактирование		
+		if (e.key == "Escape") {
+			$('.header__title__input')
+				.hide()
+				.prev('.header__title__projectname')
+				.show();
+		} else if (e.key == "Enter") {			
+			$('.header__title__input')
+				.hide()
+				.prev('.header__title__projectname')
+				.text(
+					$('.header__title__input')
+						.val()
+				)
+				.show();
+		} else return;			
+	}
 }

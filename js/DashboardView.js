@@ -116,4 +116,6 @@ export class DashboardView {
 		$('.header__button-container, .header__button-container-layout')
 			.removeAttr('style');
 	}
+
 }
+

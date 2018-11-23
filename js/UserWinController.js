@@ -26,11 +26,13 @@ export class UserWinController {
 		//следим за двойным кликом по имени проекта
 		$('.header__title__projectname')
 			.dblclick(this.pubDblclickOnProjectName.bind(this));
-		//следим за уходом с имени проекта (редактирование закончено)
-		$('.header__title__projectname')
+
+		//следим за уходом с имени проекта (редактирование закончено)		
+		$('.header__title__input')
 			.blur(this.pubBlurProjectName.bind(this));
-		//следим за нажатием клавиш на имени проекта (Escape и Enter будут значить, что редактирование закончено)
-		$('.header__title__projectname')
+
+		//следим за нажатием клавиш на имени проекта (Escape и Enter будут значить, что редактирование закончено)		
+		$('.header__title__input')
 			.keydown(this.pubKeydownInProjectName.bind(this));
 
 	}
